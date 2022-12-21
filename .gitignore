@@ -18,3 +18,15 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> candcfurnishme.com ###
+/.rnd
+/.spamassassinboxenable
+/.spamkey
+/.sqmaildata/
+/cache/
+/logs/
+/php
+/php_errorlog
+/php_mail.log
+/webstats/
