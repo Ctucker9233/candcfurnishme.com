@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="shortcut icon" href="{{ absolute_url('images/favicon.ico') }}">
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    <link href="{{ absolute_url('css/styles.css') }}" rel="stylesheet"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ absolute_url('css/styles.css') }}"
+    {% endblock %}
 </head>
