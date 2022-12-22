@@ -18,3 +18,13 @@ header{
     display: flex;
     align-items: flex-start;
 };
+
+.title img{
+    padding: 5px;
+};
+
+/* Body CSS */
+body{
+    background-color: #949494;
+    display: flex;
+};
