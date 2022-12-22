@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ absolute_url('favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ absolute_url('images/favicon.ico') }}">
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
+    <link href="{{ absolute_url('css/styles.css') }}" rel="stylesheet"/>
 </head>
