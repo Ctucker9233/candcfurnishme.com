@@ -9,22 +9,32 @@
 header{
     display: flex;
     flex-direction: row;
+    width: 100%;
     align-items: flex-start;
     background-color: #000000;
     color: #ffffff;
-};
+}
 
 .title{
     display: flex;
     align-items: flex-start;
-};
+    flex-direction: row;
+}
 
 .title img{
     padding: 5px;
-};
+}
 
 /* Body CSS */
 body{
+    width: 100%;
     background-color: #949494;
     display: flex;
-};
+    align-items: flex-start;
+}
+
+.store{
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+}
