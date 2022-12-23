@@ -8,8 +8,7 @@
 /*header css*/
 header{
     display: flex;
-    flex-direction: row;
-    width: 100%;
+    flex: 0 0 100%;
     align-items: flex-start;
     background-color: #000000;
     color: #ffffff;
@@ -17,7 +16,6 @@ header{
 
 .title{
     display: flex;
-    align-items: flex-start;
     flex-direction: row;
 }
 
@@ -30,11 +28,13 @@ body{
     width: 100%;
     background-color: #949494;
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
 }
 
 .store{
     display: flex;
-    align-items: flex-start;
-    width: 100%;
+    flex: 0 0 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
