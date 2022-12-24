@@ -14,13 +14,16 @@ header{
     color: #ffffff;
 }
 
-.title{
+.site-title{
     display: flex;
     flex-direction: row;
 }
 
-.title img{
+.site-title > a > img{
+    flex-grow: 1;
     padding: 5px;
+    width: 30px;
+    height: 30px;
 }
 
 /* Body CSS */
@@ -37,4 +40,25 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 30%;
+    margin: 30px auto;
+    background-color: #000000;
+    padding: 20px;
+}
+
+.store > h2{
+    padding-bottom: 20px;
+    color: #ffffff;
+}
+
+.store-btn{
+    width: 100%;
+    padding: 10px;
+}
+
+.store-btn > input {
+    padding: 20px;
+    width: 100%;
+    font-size: 2rem;
+    text-decoration: underline;
 }

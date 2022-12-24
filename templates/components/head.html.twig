@@ -1,8 +1,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ absolute_url('images/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url('css/styles.css') }}"
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}"
     {% endblock %}
 </head>
