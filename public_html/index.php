@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 use App\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';

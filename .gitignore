@@ -35,3 +35,4 @@
 /npm
 /npm-debug.log
 /public_html/.htaccess
+/migrations/

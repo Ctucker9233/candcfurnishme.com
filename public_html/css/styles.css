@@ -19,11 +19,16 @@ header{
     flex-direction: row;
 }
 
+.site-title > h1 {
+    align-items: center;
+}
+
 .site-title > a > img{
+    display: flex;
     flex-grow: 1;
+    align-items: center;
     padding: 5px;
-    width: 30px;
-    height: 30px;
+    max-width: 100%;
 }
 
 /* Body CSS */
@@ -61,4 +66,34 @@ body{
     width: 100%;
     font-size: 2rem;
     text-decoration: underline;
+}
+
+/* Login CSS */
+.login-wrapper{
+        width: 30%;
+        margin: 10px auto;
+    }
+.login-form{
+        padding: 15px;
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    .login-form > .btn.btn-lg.btn-primary{
+        margin-top: 10px;
+        background-color: #DADADA;
+        color: #000000;
+    }
+@media screen and (min-width: 450px) and (max-width: 912px) {
+    .login-wrapper{
+        width: 80%;
+        margin: 10px auto;
+    }
+}
+
+@media screen and (min-width: 370px) and (max-width: 415px) {
+    .login-wrapper{
+        width: 90%;
+        margin: 10px auto;
+    }
 }

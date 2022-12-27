@@ -1,6 +1,10 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+    
+controllersAdmin:
+    resource: ../../src/Controller/Admin/
+    type: annotation
 
 kernel:
     resource: ../../src/Kernel.php
