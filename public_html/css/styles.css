@@ -8,10 +8,11 @@
 /*header css*/
 header{
     display: flex;
-    flex: 0 0 100%;
+    flex-grow: 1;
     align-items: flex-start;
     background-color: #000000;
     color: #ffffff;
+    border-bottom: 3px solid red;
 }
 
 .site-title{
@@ -19,8 +20,9 @@ header{
     flex-direction: row;
 }
 
-.site-title > h1 {
+.site-title > h2 {
     align-items: center;
+    color: #ffffff;
 }
 
 .site-title > a > img{
@@ -34,7 +36,7 @@ header{
 /* Body CSS */
 body{
     width: 100%;
-    background-color: #949494;
+    background-color: #e9e8e8;
     display: flex;
     flex-direction: column;
 }
@@ -96,4 +98,21 @@ body{
         width: 90%;
         margin: 10px auto;
     }
+}
+
+/*Sidebar*/
+#main-menu{
+    margin-top: 10px;
+}
+
+.sidebar{
+    background-color: #000000;
+}
+
+.main-menu{
+    border: 0px;
+}
+
+#main-menu > .menu > .menu-item{
+    color: #ffffff;
 }
