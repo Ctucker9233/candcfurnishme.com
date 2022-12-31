@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,22 +18,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use Twig\Environment;
 
-class UserCrudController extends AbstractCrudController
+class ProfileCrudController extends AbstractCrudController
 {
     /**
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SALES')")
-     * @Route("/user", name="app_user")
+     * @Route("/profile", name="app_profile")
      */
-    /*private $adminUrlGenerator;
-
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
-    {
-        $this->adminUrlGenerator->set('users')->generateUrl();
-    }*/
 
     public static function getEntityFqcn(): string
     {
         return User::class;
+        /*return $this->redirectToRoute('admin', array(
+            'action' => 'show',
+            'id' => $id,
+            'entity' => $this->request->query->get('entity'),
+        ));*/
     }
 
     /*public function configureActions()*/
@@ -40,8 +40,8 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-        ->setEntityLabelInSingular('User')
-        ->setEntityLabelInPlural('Users')
+        ->setEntityLabelInSingular('Profile')
+        ->setEntityLabelInPlural('Details')
         ->setPageTitle('index', '%entity_label_plural% List');
     }
 
@@ -57,13 +57,4 @@ class UserCrudController extends AbstractCrudController
         ];
     }
 
-    public function profile(user $user, AdminUrlGenerator $adminUrlGenerator)
-    {
-        $targetUrl = $adminUrlGenerator
-            ->setController(self::class)
-            ->setAction(Crud::PAGE_DETAIL)
-            ->setEntityId($user->getId())
-            ->generateUrl();
-        return $this->redirect($targetUrl);
-    }
 }
