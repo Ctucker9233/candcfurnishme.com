@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SaleRepository;
 use App\Entity\Customer;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 

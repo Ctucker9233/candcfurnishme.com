@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Customer;
+use App\Repository\CustomerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CustomerCrudController extends AbstractCrudController

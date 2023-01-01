@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\Sale;
+use App\Entity\Customer;
 use App\Controller\Admin\UserCrudController;
 use App\Controller\Admin\ProfileCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -69,6 +70,7 @@ class DashboardController extends AbstractDashboardController
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-map-marker-alt', User::class);
         yield MenuItem::linkToCrud('Sales', 'fas fa-shopping-cart', Sale::class);
+        yield MenuItem::linkToCrud('Customers', 'fas fa-shopping-cart', Customer::class);
     }
 
     public function configureActions(): Actions
