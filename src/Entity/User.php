@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -45,6 +47,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity=sale::class, mappedBy="salesperson")
+     */
+    private $SalesWritten;
+
+    public function __construct()
+    {
+        $this->SalesWritten = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +162,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, sale>
+     */
+    public function getSalesWritten(): Collection
+    {
+        return $this->SalesWritten;
+    }
+
+    public function addSalesWritten(sale $salesWritten): self
+    {
+        if (!$this->SalesWritten->contains($salesWritten)) {
+            $this->SalesWritten[] = $salesWritten;
+            $salesWritten->setSalesperson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalesWritten(sale $salesWritten): self
+    {
+        if ($this->SalesWritten->removeElement($salesWritten)) {
+            // set the owning side to null (unless already changed)
+            if ($salesWritten->getSalesperson() === $this) {
+                $salesWritten->setSalesperson(null);
+            }
+        }
 
         return $this;
     }

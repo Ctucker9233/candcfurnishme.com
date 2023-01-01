@@ -75,6 +75,12 @@ class Sale
      */
     private $relationship;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="SalesWritten")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $salesperson;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -208,6 +214,18 @@ class Sale
     public function setRelationship(?customer $relationship): self
     {
         $this->relationship = $relationship;
+
+        return $this;
+    }
+
+    public function getSalesperson(): ?User
+    {
+        return $this->salesperson;
+    }
+
+    public function setSalesperson(?User $salesperson): self
+    {
+        $this->salesperson = $salesperson;
 
         return $this;
     }
