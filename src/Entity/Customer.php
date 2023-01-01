@@ -79,9 +79,15 @@ class Customer
      */
     private $RelatedSales;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="Sales")
+     */
+    private $Sales;
+
     public function __construct()
     {
         $this->RelatedSales = new ArrayCollection();
+        $this->Sales = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -245,6 +251,36 @@ class Customer
             // set the owning side to null (unless already changed)
             if ($relatedSale->getRelationship() === $this) {
                 $relatedSale->setRelationship(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sale>
+     */
+    public function getSales(): Collection
+    {
+        return $this->Sales;
+    }
+
+    public function addSale(Sale $sale): self
+    {
+        if (!$this->Sales->contains($sale)) {
+            $this->Sales[] = $sale;
+            $sale->setSales($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(Sale $sale): self
+    {
+        if ($this->Sales->removeElement($sale)) {
+            // set the owning side to null (unless already changed)
+            if ($sale->getSales() === $this) {
+                $sale->setSales(null);
             }
         }
 

@@ -81,6 +81,11 @@ class Sale
      */
     private $salesperson;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=customer::class, inversedBy="Sales")
+     */
+    private $Sales;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -226,6 +231,18 @@ class Sale
     public function setSalesperson(?User $salesperson): self
     {
         $this->salesperson = $salesperson;
+
+        return $this;
+    }
+
+    public function getSales(): ?customer
+    {
+        return $this->Sales;
+    }
+
+    public function setSales(?customer $Sales): self
+    {
+        $this->Sales = $Sales;
 
         return $this;
     }
