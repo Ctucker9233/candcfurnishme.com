@@ -30,9 +30,7 @@ class DashboardController extends AbstractDashboardController
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
         dump($routeBuilder);
-        $url = $routeBuilder->setController(UserCrudController::class)->setAction(Action::DETAIL)
-            ->setEntityId($context->getEntity()->getPrimaryKeyValue())
-            ->generateUrl();
+        $url = $routeBuilder->setController(UserCrudController::class)->generateUrl();
 
         return $this->redirect($url);
     }

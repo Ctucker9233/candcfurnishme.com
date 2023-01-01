@@ -10,32 +10,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Twig\Environment;
 
 class UserCrudController extends AbstractCrudController
 {
     /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SALES')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")
      * @Route("/user", name="app_user")
      */
-    /*private $adminUrlGenerator;
-
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
-    {
-        $this->adminUrlGenerator->set('users')->generateUrl();
-    }*/
 
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
-
-    /*public function configureActions()*/
 
     public function configureCrud(Crud $crud): Crud
     {
@@ -44,16 +39,30 @@ class UserCrudController extends AbstractCrudController
         ->setEntityLabelInPlural('Users')
         ->setPageTitle('index', '%entity_label_plural% List');
     }
+    
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN');
+    }
 
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('username'),
-            TextField::new('fullname', "Full Name"),
-            EmailField::new('email'),
-            TextField::new('password')->hideOnIndex(),
-            ArrayField::new('roles', "Role"),
+            yield IdField::new('id')
+                ->hideOnForm(),
+            yield TextField::new('username'),
+            yield TextField::new('fullname', "Full Name"),
+            yield EmailField::new('email'),
+            yield TextField::new('password')->hideOnIndex(),
+            $roles = ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
+            yield ChoiceField::new('roles')
+                ->setChoices(array_combine($roles, $roles))
+                ->allowMultipleChoices()
+                ->renderExpanded()
+                ->renderAsBadges()
         ];
     }
 
