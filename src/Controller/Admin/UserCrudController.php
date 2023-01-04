@@ -42,10 +42,29 @@ class UserCrudController extends AbstractCrudController
     
     public function configureActions(Actions $actions): Actions
     {
-        return $actions
+        dump($actions);
+        $editProfile = Action::new('editProfile', 'Edit Profile', 'fas fa-file-invoice');
+        $editProfile->linkToUrl(function($entity) {
+        $adminUrlGenerator = $this->get(AdminUrlGenerator::class);
+        $url = $adminUrlGenerator
+            ->setController(UserCrudController::class)
+            ->setAction(Action::EDIT)
+            ->set('filters', [
+                'agent' => [
+                    'comparison' => '=',
+                    'value' => $entity->getId()
+                ]
+            ])
+            ->generateUrl();
+        return $url;
+        });
 
+        $actions->add(Crud::PAGE_EDIT, $editProfile);
+
+        return $actions
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
-            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN');
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
+            /*->add(Action::EDIT, $editProfile);*/
     }
 
     public function configureFields(string $pageName): iterable
@@ -64,15 +83,5 @@ class UserCrudController extends AbstractCrudController
                 ->renderExpanded()
                 ->renderAsBadges()
         ];
-    }
-
-    public function profile(user $user, AdminUrlGenerator $adminUrlGenerator)
-    {
-        $targetUrl = $adminUrlGenerator
-            ->setController(self::class)
-            ->setAction(Crud::PAGE_DETAIL)
-            ->setEntityId($user->getId())
-            ->generateUrl();
-        return $this->redirect($targetUrl);
     }
 }

@@ -1,8 +1,6 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
-{% trans_default_domain ea.i18n.translationDomain %}
 
 <!DOCTYPE html>
-<html lang="{{ ea.i18n.htmlLocale }}" dir="{{ ea.i18n.textDirection }}">
 <head>
     {% block head_metas %}
         <meta charset="utf-8">
@@ -38,10 +36,6 @@
         {{ include('@EasyAdmin/includes/_encore_script_tags.html.twig', { assets: ea.assets.webpackEncoreAssets ?? [] }, with_context = false) }}
     {% endblock %}
 
-    {% if 'rtl' == ea.i18n.textDirection %}
-        <link rel="stylesheet" href="{{ asset('bundles/easyadmin/app.rtl.css') }}">
-    {% endif %}
-
     {% block configured_head_contents %}
         {% for htmlContent in ea.assets.headContents ?? [] %}
             {{ htmlContent|raw }}
@@ -50,7 +44,7 @@
 </head>
 
 {% block body %}
-    <body id="{% block body_id %}{% endblock %}" class="ea {% block body_class %}{% endblock %}">
+    <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
     {% block javascript_page_layout %}
         <script>
             document.body.classList.add(
