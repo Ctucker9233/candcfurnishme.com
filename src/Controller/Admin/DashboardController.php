@@ -30,6 +30,7 @@ class DashboardController extends AbstractDashboardController implements Dashboa
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
         dump($routeBuilder);
         $url = $routeBuilder->setController(UserCrudController::class)->generateUrl();

@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+:root {
+    --sidebar-menu-active-item-color: #000000;
+}
+
 *{
     font-family: 'Montserrat', sans-serif;
     padding: 0;
@@ -84,6 +89,10 @@ body{
         color: #ffffff;
     }
 
+.login-form > h1, h3{
+  color: #ffffff;
+}
+
 .login-form > .btn.btn-lg.btn-primary{
         margin-top: 10px;
         background-color: #DADADA;
@@ -119,6 +128,14 @@ body{
     margin-top: 10px;
 }
 
+#main-menu .menu .menu-item.active .menu-item-label{
+    color: #000000;
+}
+
+#main-menu .menu .menu-item-contents{
+    color: #ffffff;
+}
+
 .sidebar{
     background-color: #000000;
 }
@@ -127,6 +144,6 @@ body{
     border: 0px;
 }
 
-#main-menu > .menu > .menu-item{
+#main-menu .menu .menu-icon{
     color: #ffffff;
 }

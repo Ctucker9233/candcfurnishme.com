@@ -1,87 +1,109 @@
 <?php
+#Controller/Admin/UserCrudController.php
 
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use Twig\Environment;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserCrudController extends AbstractCrudController
-{
+class UserCrudController extends AbstractCrudController {
+
     /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')")
-     * @Route("/user", name="app_user")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
+    private UserPasswordHasherInterface $passwordEncoder;
 
-    public static function getEntityFqcn(): string
-    {
+    public function __construct( UserPasswordHasherInterface $passwordEncoder ) {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
+    public static function getEntityFqcn(): string {
         return User::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-        ->setEntityLabelInSingular('User')
-        ->setEntityLabelInPlural('Users')
-        ->setPageTitle('index', '%entity_label_plural% List');
+            ->setEntityLabelInSingular('User List')
+            ->setEntityLabelInPlural('Users')
+        ;
+    }
+
+    public function configureFields( string $pageName ): iterable {
+        yield FormField::addPanel( 'User data' )->setIcon( 'fa fa-user' );
+        yield IdField::new('id')->onlyOnIndex();
+        yield textField::new('fullname');
+        yield textField::new('username');
+        yield EmailField::new( 'email' )->onlyWhenUpdating()->setDisabled();
+        yield EmailField::new( 'email' )->onlyWhenCreating();
+        yield EmailField::new( 'email' )->onlyOnIndex();
+        $roles = [ 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER' ];
+        yield ChoiceField::new( 'roles' )
+                         ->setChoices( array_combine( $roles, $roles ) )
+                         ->allowMultipleChoices()
+                         ->renderAsBadges();
+        yield FormField::addPanel( 'Change password' )->setIcon( 'fa fa-key' );
+        yield Field::new( 'password', 'New password' )->onlyWhenCreating()->setRequired( true )
+                   ->setFormType( RepeatedType::class )
+                   ->setFormTypeOptions( [
+                       'type'            => PasswordType::class,
+                       'first_options'   => [ 'label' => 'New password' ],
+                       'second_options'  => [ 'label' => 'Repeat password' ],
+                       'error_bubbling'  => true,
+                       'invalid_message' => 'The password fields do not match.',
+                   ] );
+        yield Field::new( 'password', 'New password' )->onlyWhenUpdating()->setRequired( false )
+                   ->setFormType( RepeatedType::class )
+                   ->setFormTypeOptions( [
+                       'type'            => PasswordType::class,
+                       'first_options'   => [ 'label' => 'New password' ],
+                       'second_options'  => [ 'label' => 'Repeat password' ],
+                       'error_bubbling'  => true,
+                       'invalid_message' => 'The password fields do not match.',
+                   ] );
     }
     
-    public function configureActions(Actions $actions): Actions
-    {
-        dump($actions);
-        $editProfile = Action::new('editProfile', 'Edit Profile', 'fas fa-file-invoice');
-        $editProfile->linkToUrl(function($entity) {
-        $adminUrlGenerator = $this->get(AdminUrlGenerator::class);
-        $url = $adminUrlGenerator
-            ->setController(UserCrudController::class)
-            ->setAction(Action::EDIT)
-            ->set('filters', [
-                'agent' => [
-                    'comparison' => '=',
-                    'value' => $entity->getId()
-                ]
-            ])
-            ->generateUrl();
-        return $url;
-        });
+    public function createEditFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
+        $plainPassword = $entityDto->getInstance()->getPassword();
+        $formBuilder   = parent::createEditFormBuilder( $entityDto, $formOptions, $context );
+        $this->addEncodePasswordEventListener( $formBuilder, $plainPassword );
 
-        $actions->add(Crud::PAGE_EDIT, $editProfile);
-
-        return $actions
-            ->setPermission(Action::NEW, 'ROLE_ADMIN')
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN');
-            /*->add(Action::EDIT, $editProfile);*/
+        return $formBuilder;
     }
 
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            yield IdField::new('id')
-                ->hideOnForm(),
-            yield TextField::new('username'),
-            yield TextField::new('fullname', "Full Name"),
-            yield EmailField::new('email'),
-            yield TextField::new('password')->hideOnIndex(),
-            $roles = ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
-            yield ChoiceField::new('roles')
-                ->setChoices(array_combine($roles, $roles))
-                ->allowMultipleChoices()
-                ->renderExpanded()
-                ->renderAsBadges()
-        ];
+    public function createNewFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
+        $formBuilder = parent::createNewFormBuilder( $entityDto, $formOptions, $context );
+        $this->addEncodePasswordEventListener( $formBuilder );
+
+        return $formBuilder;
+    }
+
+    protected function addEncodePasswordEventListener( FormBuilderInterface $formBuilder, $plainPassword = null ): void {
+        $formBuilder->addEventListener( FormEvents::SUBMIT, function ( FormEvent $event ) use ( $plainPassword ) {
+            /** @var User $user */
+            $user = $event->getData();
+            if ( $user->getPassword() !== $plainPassword ) {
+                $user->setPassword( $this->passwordEncoder->hashPassword( $user, $user->getPassword() ) );
+            }
+        } );
     }
 }
