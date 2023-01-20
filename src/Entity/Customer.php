@@ -74,24 +74,31 @@ class Customer
     private $phone3;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $customerid;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="relationship")
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    private $RelatedSales;
+    private $isDeleted;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sale::class, mappedBy="Sales")
+     * @ORM\OneToMany(targetEntity=sale::class, mappedBy="customer")
      */
-    private $Sales;
+    private $sales;
+
+    /**
+     * @ORM\OneToMany(targetEntity=sale::class, mappedBy="customer")
+     */
+    private $sales_orders;
 
     public function __construct()
     {
         $this->RelatedSales = new ArrayCollection();
         $this->Sales = new ArrayCollection();
+        $this->sales = new ArrayCollection();
+        $this->sales_orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,6 +140,11 @@ class Customer
         $this->address2 = $address2;
 
         return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address1.', '.$this->address2;
     }
 
     public function getCity(): ?string
@@ -219,72 +231,54 @@ class Customer
         return $this;
     }
 
-    public function getCustomerid(): ?int
+    public function getCustomerid(): ?string
     {
         return $this->customerid;
     }
 
-    public function setCustomerid(int $customerid): self
+    public function setCustomerid(string $customerid): self
     {
         $this->customerid = $customerid;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Sale>
-     */
-    public function getRelatedSales(): Collection
+    public function getIsDeleted(): ?bool
     {
-        return $this->RelatedSales;
+        return $this->isDeleted;
     }
 
-    public function addRelatedSale(Sale $relatedSale): self
+    public function setIsDeleted(?bool $isDeleted): self
     {
-        if (!$this->RelatedSales->contains($relatedSale)) {
-            $this->RelatedSales[] = $relatedSale;
-            $relatedSale->setRelationship($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelatedSale(Sale $relatedSale): self
-    {
-        if ($this->RelatedSales->removeElement($relatedSale)) {
-            // set the owning side to null (unless already changed)
-            if ($relatedSale->getRelationship() === $this) {
-                $relatedSale->setRelationship(null);
-            }
-        }
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Sale>
+     * @return Collection<int, sale>
      */
-    public function getSales(): Collection
+    public function getSalesOrders(): Collection
     {
-        return $this->Sales;
+        return $this->sales_orders;
     }
 
-    public function addSale(Sale $sale): self
+    public function addSalesOrder(sale $salesOrder): self
     {
-        if (!$this->Sales->contains($sale)) {
-            $this->Sales[] = $sale;
-            $sale->setSales($this);
+        if (!$this->sales_orders->contains($salesOrder)) {
+            $this->sales_orders[] = $salesOrder;
+            $salesOrder->setCustomer($this);
         }
 
         return $this;
     }
 
-    public function removeSale(Sale $sale): self
+    public function removeSalesOrder(sale $salesOrder): self
     {
-        if ($this->Sales->removeElement($sale)) {
+        if ($this->sales_orders->removeElement($salesOrder)) {
             // set the owning side to null (unless already changed)
-            if ($sale->getSales() === $this) {
-                $sale->setSales(null);
+            if ($salesOrder->getCustomer() === $this) {
+                $salesOrder->setCustomer(null);
             }
         }
 

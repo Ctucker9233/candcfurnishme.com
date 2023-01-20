@@ -19,3 +19,10 @@ nelmio_cors:
                 allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
                 max_age: 3600
                 hosts: ['^api\.']
+            ^https://70.166.12.16:8888/RESTWCFServiceLibrary/:
+                origin_regex: true
+                allow_origin: ['^https://70.166.12.16:8888/RESTWCFServiceLibrary/']
+                allow_headers: ['X-Custom-Auth']
+                allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+                max_age: 3600
+                hosts: ['^api\.']

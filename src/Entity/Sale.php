@@ -71,26 +71,16 @@ class Sale
     private $DeliveryAmount;
 
     /**
-     * @ORM\ManyToOne(targetEntity=customer::class, inversedBy="RelatedSales")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $relationship;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="SalesWritten")
      * @ORM\JoinColumn(nullable=false)
      */
     private $salesperson;
 
     /**
-     * @ORM\ManyToOne(targetEntity=customer::class, inversedBy="Sales")
+     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="sales_orders")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $Sales;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    private $customer;
 
     public function getOrderType(): ?string
     {
@@ -212,18 +202,6 @@ class Sale
         return $this;
     }
 
-    public function getRelationship(): ?customer
-    {
-        return $this->relationship;
-    }
-
-    public function setRelationship(?customer $relationship): self
-    {
-        $this->relationship = $relationship;
-
-        return $this;
-    }
-
     public function getSalesperson(): ?User
     {
         return $this->salesperson;
@@ -236,14 +214,14 @@ class Sale
         return $this;
     }
 
-    public function getSales(): ?customer
+    public function getCustomer(): ?Customer
     {
-        return $this->Sales;
+        return $this->customer;
     }
 
-    public function setSales(?customer $Sales): self
+    public function setCustomer(?Customer $customer): self
     {
-        $this->Sales = $Sales;
+        $this->customer = $customer;
 
         return $this;
     }
