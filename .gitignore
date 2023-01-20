@@ -36,3 +36,8 @@
 /npm-debug.log
 /public_html/.htaccess
 /migrations/
+/.env.local
+/cacert.pem
+/config/secrets/
+/php.ini
+/.env
