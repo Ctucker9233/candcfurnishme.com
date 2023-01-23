@@ -56,7 +56,7 @@ class UserCrudController extends AbstractCrudController {
         yield EmailField::new( 'email' )->onlyWhenUpdating()->setDisabled();
         yield EmailField::new( 'email' )->onlyWhenCreating();
         yield EmailField::new( 'email' )->onlyOnIndex();
-        $roles = [ 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER' ];
+        $roles = [ 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SALES' ];
         yield ChoiceField::new( 'roles' )
                          ->setChoices( array_combine( $roles, $roles ) )
                          ->allowMultipleChoices()

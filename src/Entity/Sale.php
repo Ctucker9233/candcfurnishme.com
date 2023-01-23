@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\SaleRepository;
 use App\Entity\Customer;
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -81,6 +83,16 @@ class Sale
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Inventory::class, mappedBy="salesOrder")
+     */
+    private $items;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
 
     public function getOrderType(): ?string
     {
@@ -222,6 +234,33 @@ class Sale
     public function setCustomer(?Customer $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inventory>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Inventory $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->addSalesOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Inventory $item): self
+    {
+        if ($this->items->removeElement($item)) {
+            $item->removeSalesOrder($this);
+        }
 
         return $this;
     }

@@ -20,6 +20,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class CustomerCrudController extends AbstractCrudController
 {
+    /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SALES')")
+     */
     public static function getEntityFqcn(): string
     {
         return Customer::class;

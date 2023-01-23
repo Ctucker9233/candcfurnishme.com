@@ -81,47 +81,36 @@ class CustomerRefreshCommand extends Command
             }
             $customer = json_decode($customerProfile->getContent());
             //dump($customer);
-            $id = json_decode($customerProfile->getContent())->customerid ?? null;
-            //dump(count($customers));
     
             foreach($customer as $profile){
                 //dump($profile);
                 $id = $profile->customerid;
                 $prof = json_decode(json_encode($profile));
-                $finalProf = json_encode($profile);
-                dump($finalProf);
-                $dbCustomer = json_decode(($this->profitApiClient->fetchSingleProfile($input->getArgument('Customers'), $input->getArgument('Tenant'), $id))->getContent());
-                //dump($dbCustomer);
                 //dump($prof);
-                $comp = self::compare($prof, $dbCustomer);
+                $finalProf = json_encode($profile);
+                //dump($finalProf);
+                //dump($prof);
                 //dump($comp);
                 
-                if($comp!==true)
+                if($customer = $this->entityManager->getRepository(Customer::class)->findOneBy(['customerid' => $id]))
                 {
-                    if($customer = $this->entityManager->getRepository(Customer::class)->findOneBy(['customerid' => $custId]))
-                    {
-                        $this->serializer->deserialize($finalProf, Customer::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $customer]);
-                        //$this->entityManager->persist($customer);
-                        //$this->entityManager->flush();
+                    $this->serializer->deserialize($finalProf, Customer::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $customer]);
+                    $this->logger->info($prof->name . ' was sucessfully updated.');
                         //echo "Updating customer";
                         //dump($customer);
-                    }
-                    else{
-                        $customer = $this->serializer->deserialize($finalProf, Customer::class, 'json');
-                        //$this->entityManager->persist($customer);
-                        //$this->entityManager->flush();
-                        //echo "Adding customer";
-                        //dump($customer);                 
-                    }
-                    $this->entityManager->persist($customer);
-                    $this->entityManager->flush();
-                    //return Command::SUCCESS;
-
-                    $output->writeln($prof->name . ' has been saved / updated.');
                 }
                 else{
-                    $output->writeln($prof->name . ' matches completely. No update.');
+                    $customer = $this->serializer->deserialize($finalProf, Customer::class, 'json');
+                    $this->logger->info($prof->name . ' was sucessfully added.');
+                        //echo "Adding customer";
+                        //dump($customer);                 
                 }
+                $this->entityManager->persist($customer);
+                $this->entityManager->flush();
+                    //return Command::SUCCESS;
+
+                $output->writeln($prof->name . ' has been saved / updated.');
+
                 
             };
             return Command::SUCCESS;
@@ -138,24 +127,5 @@ class CustomerRefreshCommand extends Command
         }
     }
 
-    public function compare($profile, $dbCustomer)
-    {
-        //dump($profile);
-        //dump($dbCustomer);
-        $result;
-        (($profile->name)!==($dbCustomer[0]->name)) ? false :
-        ((($profile->address1)!==($dbCustomer[0]->address1)) ? false :
-        ((($profile->address2)!==($dbCustomer[0]->address2)) ? false :
-        ((($profile->city)!==($dbCustomer[0]->city)) ? false :
-        ((($profile->state)!==($dbCustomer[0]->state)) ? false :
-        ((($profile->postalcode)!==($dbCustomer[0]->postalcode)) ? false :
-        ((($profile->email)!==($dbCustomer[0]->email)) ? false :
-        ((($profile->phone1)!==($dbCustomer[0]->phone1)) ? false :
-        ((($profile->phone2)!==($dbCustomer[0]->phone2)) ? false :
-        ((($profile->phone3)!==($dbCustomer[0]->phone3)) ? false :
-        ((($profile->customerid)!==($dbCustomer[0]->customerid)) ? false :
-        ((($profile->isDeleted)!==($dbCustomer[0]->isDeleted)) ? ($result = false) : ($result = true))))))))))));
-
-        return $result;
-    }
+    
 }
