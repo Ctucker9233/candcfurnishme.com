@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        Customer:
+            class: App\Entity\Sale
+            form:
+                fields:
+                    - { type: 'group', columns: 12, label: 'Basic information' }
+                    - id
+                    - name
+                    - surname
+                    - { type: 'group', label: 'Contact information', icon: 'phone', columns: 6 }
+                    - email
+                    - phoneNumber

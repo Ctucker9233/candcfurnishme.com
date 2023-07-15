@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+:root {
+    --sidebar-menu-active-item-color: #000000;
+}
+
+*{
+    font-family: 'Montserrat', sans-serif;
+    padding: 0;
+    margin:0;
+}
+
+/*header css*/
+header{
+    display: flex;
+    flex-grow: 1;
+    align-items: flex-start;
+    background-color: #000000;
+    color: #ffffff;
+    border-bottom: 3px solid red;
+    max-height: 60px;
+}
+
+.site-title{
+    display: flex;
+    flex-direction: row;
+}
+
+.site-title > h2 {
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 15px;
+}
+
+.site-title > a > img{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    padding: 5px;
+    max-width: 100%;
+}
+
+/* Body CSS */
+body{
+    width: 100%;
+    background-color: #e9e8e8;
+    display: flex;
+    flex-direction: column;
+}
+
+.store{
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    margin: 30px auto;
+    background-color: #000000;
+    padding: 20px;
+}
+
+.store > h2{
+    padding-bottom: 20px;
+    color: #ffffff;
+}
+
+.store-btn{
+    width: 100%;
+    padding: 10px;
+}
+
+.store-btn > input {
+    padding: 20px;
+    width: 100%;
+    font-size: 2rem;
+    text-decoration: underline;
+}
+
+/* Login CSS */
+.login-wrapper{
+        width: 50%;
+        margin: 30px auto;
+    }
+.login-form{
+        padding: 15px;
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+.login-form > h1, h3{
+  color: #ffffff;
+}
+
+.login-form > .btn.btn-lg.btn-primary{
+        margin-top: 10px;
+        background-color: #DADADA;
+        color: #000000;
+    }
+
+/*Button CSS*/
+.btn-primary, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):active, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):active:focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):hover
+{
+    background-color: #DADADA;
+    color: #000000;
+}
+
+.store-btn:hover{
+    color: #000000;
+}
+.btn-primary:not(:disabled):not(.disabled):not(.btn-link):hover{
+    background-color: #adadad;
+    color: #ffffff;
+}
+@media screen and (min-width: 450px) and (max-width: 912px) {
+    .login-wrapper{
+        width: 80%;
+        margin: 10px auto;
+    }
+}
+
+@media screen and (min-width: 370px) and (max-width: 415px) {
+    .login-wrapper{
+        width: 90%;
+        margin: 10px auto;
+    }
+}
+
+/*Sidebar*/
+#main-menu{
+    margin-top: 10px;
+}
+
+#main-menu .menu .menu-item.active .menu-item-label{
+    color: #000000;
+}
+
+#main-menu .menu .menu-item-contents{
+    color: #ffffff;
+}
+
+#header-logo{
+    color: #ffffff;
+}
+
+.sidebar{
+    background-color: #000000;
+}
+
+.main-menu{
+    border: 0px;
+}
+
+#main-menu .menu .menu-icon{
+    color: #ffffff;
+}
+
+li.menu-header{
+    color: #e9e8e8;
+    font-size: 14px;
+    border-bottom: 3px solid red;
+}
+
+/*Content*/
+.datagrid{
+    overflow-x: scroll;
+    max-width: 100%;
+}
+
+.content-header{
+    background-color: #e9e8e8;
+}
+
+.datagrid > tbody > tr {
+    border-bottom: 1px solid #aeadad
+}
+
+/* Customer detail */
+.billing-address{
+    width: 50%;
+    float: left;
+}
+
+.shipping-address{
+    width: 50%;
+
+    float: right;
+}
+
+.contact{
+    width: 100%;
+    float: right;
+}

@@ -39,6 +39,29 @@ class ItemLocationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByItemId($value): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.itemId = :val')
+            ->setParameter('val', $value)
+            ->orderBy('i.id', 'ASC')
+            ->setMaxResults(1000)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findByLocItemId($value): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.locItemId = :val')
+            ->setParameter('val', $value)
+            ->orderBy('i.id', 'ASC')
+            ->setMaxResults(1000)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return ItemLocation[] Returns an array of ItemLocation objects
 //     */

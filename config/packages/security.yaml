@@ -1,16 +1,15 @@
 security:
     enable_authenticator_manager: true
+    hide_user_not_found: false
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
-        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,14 +17,19 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            form_login: ~
-            custom_authenticator: App\Security\LoginAuthenticator
             entry_point: form_login
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                target: app_login
-
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                username_parameter: username
+                password_parameter: password
+                enable_csrf: true
+            logout: true
+            remember_me:
+                secret: '%kernel.secret%'
+                # always_remember_me: true
+                signature_properties: [password]
+            
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -35,9 +39,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_SALES }
         # - { path: ^/profile, roles: ROLE_USER }
-        
+
 when@test:
     security:
         password_hashers:

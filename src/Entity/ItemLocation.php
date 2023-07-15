@@ -6,43 +6,33 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ItemLocationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * 
- * @ORM\Entity(repositoryClass=ItemLocationRepository::class)
- */
+#[ORM\Entity(repositoryClass: ItemLocationRepository::class)]
 class ItemLocation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $itemId;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $itemId = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
+    #[ORM\Column(type: 'integer')]
+    private ?int $quantity = null;
 
-    /**
-     * @ORM\Column(type="string", length=1)
-     */
-    private $status;
+    #[ORM\Column(type: 'string', length: 1)]
+    private ?string $status = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $location = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Inventory::class, inversedBy="stock")
-     */
-    private $locItemId;
+    #[ORM\ManyToOne(targetEntity: Inventory::class, inversedBy: 'stock')]
+    private ?\App\Entity\Inventory $locItemId = null;
+
+    public function __toString(): string
+    {
+        return $this->location;
+    }
 
     public function getId(): ?int
     {

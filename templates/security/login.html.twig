@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/style.css')}}">
+{% endblock %}
 
 {% block body %}
-{% block header %}
-    {{ include('components/header.html.twig') }}
-{% endblock %}
+<header>
+    <div class="site-title">
+        <a href="{{ path('app_homepage') }}"><img src={{ asset('images/TS-Logo.png') }} /></a>
+        <h2>Tucker Solutions</h2>
+    </div>
+</header>
 <div class="login-wrapper">
     <form method="post" class="login-form">
         {% if error %}
@@ -32,16 +39,16 @@
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
             See https://symfony.com/doc/current/security/remember_me.html
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
-                </label>
-            </div>
-        #}
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me" class="form-check-input"> Remember me
+            </label>
+        </div> #}
 
         <button class="btn btn-lg btn-primary" type="submit">
             Sign in
         </button>
     </form>
 </div>
+{{ parent() }}
 {% endblock %}

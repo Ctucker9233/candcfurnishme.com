@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Tucker Solutions{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/style.css')}}">
+{% endblock %}
+{% block body %}
+<header>
+    <div class="site-title">
+        <a href="{{ path('app_homepage') }}"><img src={{ asset('images/TS-Logo.png') }} /></a>
+        <h2>Tucker Solutions</h2>
+    </div>
+</header>
+<div class="store">
+    <h1 class="title">{{ title }}</h1>
+    <form action="/login">
+        <button class="btn-primary store-btn" type="submit">Employee Login</button>
+    </form>
+</div>    
+{{ parent() }}
+{% endblock %}

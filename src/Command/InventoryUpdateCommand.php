@@ -4,9 +4,14 @@ namespace App\Command;
 
 use App\Entity\Inventory;
 use App\Entity\ItemLocation;
+use App\Entity\Vendors;
+use App\Entity\Range;
+use App\Helper\InventoryHelper;
+use App\Helper\ItemMatcher;
 use App\Http\InventoryApiClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,46 +20,36 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Psr\Log\LoggerInterface;
 
+#[AsCommand(
+    name: 'app:inventory-update',
+    description: 'Update Item Data'   
+)]
 class InventoryUpdateCommand extends Command
 {
-    protected static $defaultName = 'app:inventory-update';
-    protected static $defaultDescription = 'Update Item Data';
-
-    /**
-     *@var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-    /**
-     *@var InventoryApiClient
-     */
-    private InventoryApiClient $inventoryApiClient;
-    /**
-     *@var serializer
-     */
-    private SerializerInterface $serializer;
-    /**
-     *@var LoggerInterface
-     */
-    private LoggerInterface $logger;
-
-    public function __construct(EntityManagerInterface $entityManager, InventoryApiClient $inventoryApiClient, SerializerInterface $serializer, LoggerInterface $logger)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager, 
+        private readonly InventoryApiClient $inventoryApiClient,
+        private readonly InventoryHelper $inventoryHelper,
+        private readonly ItemMatcher $itemMatcher, 
+        private readonly SerializerInterface $serializer,
+        private readonly KernelInterface $kernel, 
+        private readonly LoggerInterface $logger)
     {
-        $this->entityManager = $entityManager;
-        $this->inventoryApiClient = $inventoryApiClient;
-        $this->serializer = $serializer;
-        $this->logger = $logger;
-
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('Products', InputArgument::REQUIRED, 'Products')
-            ->addArgument('Inventories', InputArgument::REQUIRED, 'Inventories')
+            ->addArgument('ProductsByVendor', InputArgument::REQUIRED, 'Products')
+            ->addArgument('InventoriesByVendor', InputArgument::REQUIRED, 'locations')
             ->addArgument('Tenant', InputArgument::REQUIRED, 'Tenant')
+            ->addArgument('vendor', InputArgument::REQUIRED, 'vendor')
         ;
     }
 
@@ -62,51 +57,95 @@ class InventoryUpdateCommand extends Command
     {
         try
         {
-            $items = $this->inventoryApiClient->fetchItems($input->getArgument('Products'), $input->getArgument('Tenant'));
-            $quantities = $this->inventoryApiClient->fetchQuantity($input->getArgument('Inventories'), $input->getArgument('Tenant'), $Id);
-            
-            echo "Back in Command";
-
-            if(($items->getStatusCode() !==200) && ($quantities->getStatusCode() !==200)){
-                $output->writeln($items->getContent());
-                $output->writeln($quantities->getContent());
-                Return Command::FAILURE;
+            $vendor = $input->getArgument('vendor');
+            $cache = new PhpFilesAdapter(
+                $namespace = "inventory",
+                $defaultLifetime = 0,
+                // single file where values are cached
+                $directory = $this->kernel->getProjectDir() . '/var/cache'
+            );
+            $itemIdCache = $cache->getItem('inventoryIds_'.$vendor);
+            $ids = $itemIdCache->get();
+            //foreach($ids as $id){
+                //foreach($id as $i){
+            $itemGet = $this->inventoryApiClient->fetchItems($input->getArgument('ProductsByVendor'), $input->getArgument('Tenant'), $vendor);
+                    
+            if($itemGet->getStatusCode() !==200){
+                dump($itemGet->getContent());
+                return Command::FAILURE;
             }
-            $inventory = json_decode($items->getContent());
-            //$quantity = json_decode($quanitites->getContent());
-            //dump($inventory);
-            //dump($quantity);
-            foreach($inventory as $item){
-                $Id = $item->itemId;
-                
-                
-                //dump($customerRecord);
-                //if($customer = $this->entityManager->getRepository(Customer::class)->findOneBy(['customerid' => $profId])){
-                    //$this->serializer->deserialize($customerRecord->getContent(), Customer::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $customer]);
-                    //$this->logger->info("Customer id ".$profId." updated");
-                //}
-                //else{
-                    //$customer = $this->serializer->deserialize($customerRecord->getContent(), Customer::class, 'json'); 
-                    //$this->logger->info("Customer id ".$profId." added");              
-                //}
-                //$this->entityManager->persist($customer);
-                //$this->entityManager->flush();
-                //return Command::SUCCESS;
 
-                //$output->writeln($customer->getName() . ' has been saved / updated.');
+            $items = json_decode($itemGet->getContent());
+            //dump($items);
+            foreach($items as $item){
+                    //if($itm === 'no result'){
+                        //dump("no item with id" . $itm->id . ".");
+                    //}
+                    //else{
+                $Id = $item->itemId;
+                //dump($Id);
+                if($item->backorderCode === "B"){
+                            
+                            //$vendor = $itm->vendorId;
+                            
+                    $BcVid = $this->entityManager->getRepository(Vendors::class)->findOneBy(['vendorId' => $vendor])->getBCId();
+
+                    $locations = $this->inventoryApiClient->fetchQuantity($input->getArgument('InventoriesByVendor'), $input->getArgument('Tenant'), $vendor);
+                                
+                    if($locations->getStatusCode() !==200 ){
+                        dump($locations->getContent());
+                        return Command::FAILURE;
+                    };
+
+                    $quantity = json_decode($locations->getContent(), null, 512, JSON_THROW_ON_ERROR);
+                    $quantities = $this->inventoryHelper->locationFilter($quantity, $Id);
+                    $QOH = $this->inventoryHelper->quantityCounter($quantities);
+
+                    $result = $this->itemMatcher->matcher($item, $QOH, $vendor, $Id);
+                    if($result === 'match'){
+                        $this->logger->info($Id . ' is a complete match. Updating quantities.');
+                    }
+                    else{
+                        if($itm = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $Id]))
+                        {
+                        
+                            $this->serializer->deserialize(json_encode($item), Inventory::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $itm]);
+                            $itm->setQuantity($QOH);
+                            $itm->setBCVendorId($BcVid);
+                            //echo 'item quantity set';
                 
-            };
+                            //dump("Item id ".$Id." updated"); 
+                        }
+                        else
+                        {
+                            $itm = $this->serializer->deserialize(json_encode($item), Inventory::class, 'json');
+                            $itm->setQuantity($QOH);
+                            $itm->setBCVendorId($BcVid);
+                            //dump("new item");
+                            //dump("Item id ".$Id." added");           
+                        }
+                        $this->entityManager->persist($itm);
+                        $this->entityManager->flush();
+                    }  
+                }
+                else{
+                    $this->logger->info("Item id ".$Id." discontinued");
+                }
+            }
+                //} 
+            //}
+            
             return Command::SUCCESS;
         }
         catch(\Exception $exception){
 
-            $this->logger->warning(get_class($exception) . ': ' . $exception->getMessage() . ' in ' . $exception->getFile()
-                . ' on line ' . $exception->getLine() . ' using [Customer] ' . '[' . $input->getArgument('Products') .
+            $error = $this->logger->warning($exception::class . ': ' . $exception->getMessage() . ' in ' . $exception->getFile()
+            . ' on line ' . $exception->getLine() . ' using [ProductsByVendor] ' . '[' . $input->getArgument('ProductsByVendor') .
             '/' . $input->getArgument('Tenant') . ']');
 
-            $output->writeln('There has been an error. Check logs.');
+            dump($error);
 
             return Command::FAILURE;
-        }
+        }   
     }
 }

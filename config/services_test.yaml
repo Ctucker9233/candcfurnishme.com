@@ -1,3 +1,0 @@
-services:
-    App\Http\ProfitApiClientInterface:
-        class: App\Http\FakeProfitApiClient

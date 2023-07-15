@@ -4,8 +4,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Sale;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -25,15 +25,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserCrudController extends AbstractCrudController {
-
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
-    private UserPasswordHasherInterface $passwordEncoder;
-
-    public function __construct( UserPasswordHasherInterface $passwordEncoder ) {
-        $this->passwordEncoder = $passwordEncoder;
+class UserCrudController extends AbstractCrudController 
+{
+    public function __construct(private readonly UserPasswordHasherInterface $passwordEncoder)
+    {
     }
 
     public static function getEntityFqcn(): string {
@@ -44,7 +39,7 @@ class UserCrudController extends AbstractCrudController {
     {
         return $crud
             ->setEntityLabelInSingular('User List')
-            ->setEntityLabelInPlural('User')
+            ->setEntityLabelInPlural('Users')
         ;
     }
 
@@ -80,6 +75,9 @@ class UserCrudController extends AbstractCrudController {
                        'error_bubbling'  => true,
                        'invalid_message' => 'The password fields do not match.',
                    ] );
+        yield AssociationField::new('SalesWritten')
+            ->setCrudController(SaleCrudController::class)
+            ->autocomplete();
     }
     
     public function createEditFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {

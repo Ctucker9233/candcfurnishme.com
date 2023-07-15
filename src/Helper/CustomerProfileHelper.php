@@ -30,10 +30,13 @@ class CustomerProfileHelper
             {
                 //dump($customer);
                 //dump($customer->Phones);
-                $phones = self::phoneProcessor($data);
+                $phones = self::phoneProcessor($customer);
+                $newname = self::nameProcessor($customer->Name);
                 
                 $customerProfileAsArray = [
-                'name' => $customer->Name ?? "",
+                'name' => $customer->Name,
+                'firstname' => $newname[0],
+                'lastname' => $newname[1],
                 'address1' => $customer->Address1 ?? "",
                 'address2' => $customer->Address2 ?? "",
                 'city' => $customer->City ?? "",
@@ -62,8 +65,15 @@ class CustomerProfileHelper
         {
             $phones = self::phoneProcessor($data);
 
+            $name = $customer->Name;
+            $name_parts = explode(", ", $name);
+            $first_name = $name_parts[1];
+            $last_name = $name_parts[0];
+
             $customerProfileAsArray = [
             'name' => $data->Name ?? "",
+            'firstname' => $first_name,
+            'lastname' => $last_name,
             'address1' => $data->Address1 ?? "",
             'address2' => $data->Address2 ?? "",
             'city' => $data->City ?? "",
@@ -82,6 +92,38 @@ class CustomerProfileHelper
         else{
             echo "It's not an object or array.";
         };
+    }
+
+    public static function dbProfileProcessor($data){
+        $contentArray = [];
+        if (is_array($data) || is_object($data))
+        {
+            foreach($data as $customer) 
+            {
+                $customerProfileAsArray = [
+                'name' => $customer->getName() ?? "",
+                'firstname' => $customer->getFirstname() ?? "",
+                'lastname' => $customer->getLastname() ?? "",
+                'address1' => $customer->getAddress1() ?? "",
+                'address2' => $customer->getAddress2() ?? "",
+                'city' => $customer->getCity() ?? "",
+                'state' => $customer->getState() ?? "",
+                'postalcode' => $customer->getPostalcode() ?? "",
+                'email' => $customer->getEmail() ?? "",
+                'phone1' => $customer->getPhone1() ?? "",
+                'phone2' => $customer->getPhone2() ?? "",
+                'phone3' => $customer->getPhone3() ?? "",
+                'customerid' => $customer->getCustomerid() ?? "",
+                'isDeleted' => $customer->getIsDeleted() ?? false,
+                ];
+                array_push($contentArray, $customerProfileAsArray);
+            };  
+               
+        }
+        else{
+            echo "It's not an object or array.";
+        }
+        return $contentArray;
     }
 
     public static function phoneProcessor($data){
@@ -128,5 +170,31 @@ class CustomerProfileHelper
             }
         };
         return $phones;
+    }
+
+    public static function nameProcessor($custname){
+        $name = array();
+        if (str_contains($custname, ', ')) {
+            $name_parts = explode(", ", $custname);
+            $first_name = $name_parts[1];
+            $last_name = $name_parts[0];
+            array_push($name, $first_name);
+            array_push($name, $last_name);
+        }
+        elseif(str_contains($custname, ',')) {
+            $name_parts = explode(",", $custname);
+            $first_name = $name_parts[1];
+            $last_name = $name_parts[0];
+            array_push($name, $first_name);
+            array_push($name, $last_name);
+        }
+        else{
+            $first_name = $custname;
+            $last_name = $custname;
+            array_push($name, $first_name);
+            array_push($name, $last_name);
+        }
+        //dump($name);
+        return $name;
     }
 }

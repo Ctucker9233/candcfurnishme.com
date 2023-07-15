@@ -6,59 +6,48 @@ use App\Entity\Sale;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $username;
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    private ?string $username = null;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
+    #[ORM\Column(type: 'string')]
+    private ?string $password = null;
 
     private $plainPassword;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $fullname;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $fullname = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $email;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $email = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=sale::class, mappedBy="salesperson")
-     */
-    private $SalesWritten;
+    #[ORM\OneToMany(targetEntity: sale::class, mappedBy: 'salesperson')]
+    private \Doctrine\Common\Collections\Collection|array $SalesWritten;
 
     public function __construct()
     {
         $this->SalesWritten = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullname();
     }
 
     public function getId(): ?int

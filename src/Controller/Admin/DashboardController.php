@@ -5,13 +5,19 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Entity\Sale;
 use App\Entity\Customer;
+use App\Entity\Inventory;
+use App\Entity\Packages;
+use App\Entity\ItemLocation;
+use App\Entity\Vendors;
+use App\Entity\Range;
+use Cron\CronBundle\Entity\CronJob;
 use App\Controller\Admin\UserCrudController;
 use App\Controller\Admin\ProfileCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -24,22 +30,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController implements DashboardControllerInterface
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_SALES')")
-     * @Route("/", name="app_admin")
-     */
+    #[IsGranted('ROLE_SALES')]
+    #[Route("/admin", name: "app_admin")]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        dump($routeBuilder);
-        $url = $routeBuilder->setController(UserCrudController::class)->generateUrl();
+        $url = $routeBuilder->setController(InventoryCrudController::class)->generateUrl();
 
         return $this->redirect($url);
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu
     {
+        if(!$user instanceof User) {
+            throw new \Exception('Wrong user');
+        }
         // Usually it's better to call the parent method because that gives you a
         // user menu with some menu items already created ("sign out", "exit impersonation", etc.)
         // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
@@ -53,7 +58,7 @@ class DashboardController extends AbstractDashboardController implements Dashboa
 
             // you can use any type of menu item, except submenus
             ->addMenuItems([
-                MenuItem::linkToUrl('My Profile', 'fa fa-id-card', $this->get(AdminUrlGenerator::class)->setController(UserCrudController::class)->setAction(Action::DETAIL)->setEntityId($user->getId())->generateUrl()),
+                MenuItem::linkToUrl('My Profile', 'fa fa-id-card', $this->container->get(AdminUrlGenerator::class)->setController(UserCrudController::class)->setAction(Action::DETAIL)->setEntityId($user->getId())->generateUrl()),
                 MenuItem::section(),
                 MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
             ]);
@@ -70,15 +75,32 @@ class DashboardController extends AbstractDashboardController implements Dashboa
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
-        yield MenuItem::linkToCrud('Users', 'fas fa-map-marker-alt', User::class);
-        yield MenuItem::linkToCrud('Sales', 'fas fa-shopping-cart', Sale::class);
-        yield MenuItem::linkToCrud('Customers', 'fas fa-shopping-cart', Customer::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class)
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Sales', 'fas fa-receipt', Sale::class);
+        yield MenuItem::linkToCrud('Customers', 'fas fa-user-group', Customer::class);
+        yield MenuItem::section('Inventory');
+        yield MenuItem::linkToCrud('Items', 'fas fa-couch', Inventory::class);
+        yield MenuItem::linkToCrud('Packages', 'fas fa-box', Packages::class);
+        yield MenuItem::linkToCrud('Locations', 'fas fa-location-crosshairs', ItemLocation::class);
+        yield MenuItem::section('Vendors');
+        yield MenuItem::linkToCrud('Vendors', 'fas fa-wallet', Vendors::class);
+        yield MenuItem::section('Tools')
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Range', 'fas fa-screwdriver-wrench', Range::class)
+            ->setPermission('ROLE_ADMIN');
     }
 
     public function configureActions(): Actions
     {
         return parent::configureActions()
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
+    public function configureAssets(): Assets
+    {
+        return parent::configureAssets()
+            ->addCssFile('css/style.css');
     }
 
 }

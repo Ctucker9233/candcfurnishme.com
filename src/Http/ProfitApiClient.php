@@ -12,29 +12,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ProfitApiClient implements ProfitApiClientInterface
 {
     /**
-     *@var HttpClientInterface
-     */
-
-    private HttpClientInterface $httpClient;
-
-    /**
-     *@var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    private SerializerInterface $serializer;
-    /**
      *@var customerQuery
      */
 
     private const baseUrl = 'https://70.166.12.16:8888/RESTWCFServiceLibrary/';
     private const serviceUrl = 'https://70.166.12.16:8888/RESTWCFServiceLibrary/?wsdl';
 
-    public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    public function __construct(private readonly HttpClientInterface $httpClient, private readonly EntityManagerInterface $entityManager, private readonly SerializerInterface $serializer)
     {
-        $this->httpClient = $httpClient;
-        $this->entityManager = $entityManager;
-        $this->serializer = $serializer;
     }
 
     public function fetchCustomerProfile($customerString, $Tenant): JsonResponse
@@ -57,7 +42,7 @@ class ProfitApiClient implements ProfitApiClientInterface
         if($response->getStatusCode() !== 200){
             return new JsonResponse('Profit Api Client Error ', 400);
         };
-        $contents = json_decode($response->getContent());
+        $contents = json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR);
         //dump($contents);
         $result = CustomerProfileHelper::profileProcessor($contents);
         
@@ -85,7 +70,7 @@ class ProfitApiClient implements ProfitApiClientInterface
             return new JsonResponse('Profit Api Client Error ', 400);
         };
 
-        $customer = json_decode($response->getContent());
+        $customer = json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR);
 
         $result = CustomerProfileHelper::singleProfileProcessor($customer);
         
@@ -110,11 +95,15 @@ class ProfitApiClient implements ProfitApiClientInterface
         //dump($response->getContent());
         //dump($response->getStatusCode());
 
-        if($response->getStatusCode() !== 200){
+        if($response->getStatusCode() !== 200 ){
+            if($response->getStatusCode() === 404 ){
+                $result = "no result";
+                return new JsonResponse($result, 200);
+            }
             return new JsonResponse('Profit Api Client Error ', 400);
         };
 
-        $ids = json_decode($response->getContent());
+        $ids = json_decode($response->getContent(), null, 512, JSON_THROW_ON_ERROR);
 
         $result = CustomerProfileHelper::idProcessor($ids);
         

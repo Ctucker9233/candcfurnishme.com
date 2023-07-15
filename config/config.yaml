@@ -1,0 +1,6 @@
+easy_admin:
+  entities:
+    Sale:
+      form:
+        fields:
+          - { property: 'SaleInvItems', type: 'easyadmin_autocomplete' }

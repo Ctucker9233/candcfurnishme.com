@@ -39,20 +39,20 @@ class SaleRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sale[] Returns an array of Sale objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Sale[] Returns an array of Sale objects
+     */
+    public function findByStatus($value): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.PsStatus = :val')
+            ->setParameter('val', $value)
+            ->orderBy('s.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Sale
 //    {
