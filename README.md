@@ -1,5 +1,6 @@
 # candcfurnishme.com
 A Middleware between Bigcommerce and the Profit Systems Point of Sale Software
+Feel free to email at tuckersfurniture@gmail.com for a preview account to look inside and see what live data looks like.
 
 Manage middleware users with differing permission level
 ![middleware1](https://github.com/Ctucker9233/candcfurnishme.com/assets/19523985/24512e83-3c60-4834-b82d-2dc34d1ab672)
