@@ -55,7 +55,7 @@ class OrderUpdateCommand extends Command
             $min = $this->entityManager->getRepository(Range::class)->findOneBy(['id' => 1])->getMinId();
             $orders = $this->client->getOrders($min)->getContent();
             $orders = json_decode($orders);
-            //dump($orders);
+            dump($orders);
 
             foreach($orders as $order)
             {
@@ -86,8 +86,8 @@ class OrderUpdateCommand extends Command
                         $cust = array(
                             'id'=> $customer->getId(),
                             'name' => $custName,
-                            'firstname' => $order->billing_address->last_name,
-                            'lastname' => $order->billing_address->first_name,
+                            'firstname' => $order->billing_address->first_name,
+                            'lastname' => $order->billing_address->last_name,
                             'address1' =>$customer->getAddress1(),
                             'address2' =>$customer->getAddress2(),
                             'city' =>$customer->getCity(),
@@ -109,8 +109,8 @@ class OrderUpdateCommand extends Command
                     else{
                         $cust = array(
                             'name' => $custName,
-                            'firstname' => $order->billing_address->last_name,
-                            'lastname' => $order->billing_address->first_name,
+                            'firstname' => $order->billing_address->first_name,
+                            'lastname' => $order->billing_address->last_name,
                             'address1' =>$order->billing_address->street_1,
                             'address2' =>$order->billing_address->street_2,
                             'city' =>$order->billing_address->city,
@@ -154,6 +154,10 @@ class OrderUpdateCommand extends Command
                     if($sale = $this->entityManager->getRepository(Sale::class)->findOneBy(['BcOrderNumber' => $order->id]))
                     {
                         dump("sale exists");
+                        $so = json_encode($invoice);
+                        $this->serializer->deserialize($so, Sale::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $sale]);
+                        $this->entityManager->persist($sale);
+                        $this->entityManager->flush();
                     }
                     else
                     {

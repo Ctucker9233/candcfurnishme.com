@@ -104,7 +104,7 @@ class SaleCrudController extends AbstractCrudController
             yield ChoiceField::new('shipViaCode')->setColumns(6)
                 ->setChoices( array_combine( $delivery, $delivery ) )
                 ->renderAsBadges();
-            $payment = [ 'Cash', 'Check', 'Visa/MC' ];
+            $payment = [ 'Cash', 'Check', 'Visa/MC', 'Other' ];
             yield ChoiceField::new('paymentMethod')
                 ->setChoices( array_combine( $payment, $payment ) )
                 ->renderAsBadges();

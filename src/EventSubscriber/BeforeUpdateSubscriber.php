@@ -60,7 +60,7 @@ class BeforeUpdateSubscriber implements EventSubscriberInterface
             $delivery = $sale->getDeliveryAmount();
             //dump($delivery);
 
-            $salestax = $sale->getTaxPercentage();
+            $salestax = $sale->getTaxPercentage()/100;
             $tax = ($subtotal + $delivery) * $salestax;
             $total = $subtotal + $delivery + $tax;
             

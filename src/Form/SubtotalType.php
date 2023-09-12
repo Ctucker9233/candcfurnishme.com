@@ -78,8 +78,7 @@ class SubtotalType extends AbstractType
                         $sale['DeliveryAmount'] = 0;
                     }
                     $delivery = $sale['DeliveryAmount'];
-                    $salestax = $sale['tax'];
-                    $tax = ($subtotal + $delivery) * $salestax;
+                    $tax = ($subtotal + $delivery) * ($sale['TaxPercentage']/100);
                     $total = $subtotal + $delivery + $tax;
                     $sale['SaleAmount'] = $subtotal;
                     $sale['TaxAmount'] = $tax;
