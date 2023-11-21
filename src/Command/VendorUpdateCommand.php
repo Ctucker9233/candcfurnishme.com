@@ -86,6 +86,7 @@ class VendorUpdateCommand extends Command
                     }
                     else{
                         $vendor = $this->serializer->deserialize($vnd, Vendors::class, 'json'); 
+                        $vendor->setActive(false);
                         dump("Vendor id ".$vendId." added");              
                     }
                     $this->entityManager->persist($vendor);

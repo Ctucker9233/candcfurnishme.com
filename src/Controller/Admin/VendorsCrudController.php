@@ -41,6 +41,7 @@ class VendorsCrudController extends AbstractCrudController
             yield TextField::new('pageTitle'),
             yield TextField::new('brandUrl'),
             yield BooleanField::new('active'),
+            yield TextField::new('command'),
         ];
     }
     

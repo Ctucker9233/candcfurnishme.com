@@ -113,14 +113,22 @@ class SaleCrudController extends AbstractCrudController
                 ->setFormTypeOption(
                     'disabled',
                     true
-                );
+                )
+                ->setFormTypeOptions([
+                    'row_attr' => [
+                        'data-controller' => 'subtotal_controller',
+                    ],
+                    'attr' => [
+                        'data-action' => 'subtotal#render',
+                    ],
+                ]);
             yield NumberField::new('DeliveryAmount')->hideOnIndex();
             yield TextField::new('taxCode');
             $tax = [7.75, 8.25, 8.5, 8.75];
             yield ChoiceField::new('TaxPercentage', 'Tax Percentage')
                 ->hideOnIndex()
-                ->setChoices( array_combine( $tax, $tax ) );yield NumberField::new('taxAmount')
-                ->hideOnIndex()
+                ->setChoices( array_combine( $tax, $tax ) );
+            yield NumberField::new('taxAmount')
                 ->setFormTypeOption(
                     'disabled',
                     true
@@ -133,6 +141,9 @@ class SaleCrudController extends AbstractCrudController
                 ->setEntryType(QuantityType::class)
                 ->setFormTypeOptions([
                     'by_reference' => false,
+                    'attr' => [
+                        'data-subtotal-target' => 'subtotal',
+                    ],
                 ])
                 ->setColumns(12);
     }

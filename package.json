@@ -2,8 +2,8 @@
   "name": "tucker-solutions2",
   "version": "1.0.0",
   "engines": {
-    "node": "v18.15.0",
-    "npm": "9.6.1"
+    "node": "v18.18.1",
+    "npm": "10.2.3"
   },
   "description": "A set of web tools using profit api",
   "main": "index.js",

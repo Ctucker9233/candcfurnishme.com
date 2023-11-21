@@ -48,55 +48,64 @@ class BaseUpdateCommand extends Command
             $vendor = $input->getArgument('vendor');
 
             //cache locations for this vendor
-            $command = $this->getApplication()->find('app:location-cache');
-            $arguments = array(
-                "vendor" => $vendor
-            );
-            $input = new ArrayInput($arguments);
-            $returnCode = $command->run($input, $output);
+            $cacheInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:location-cache',
+                'vendor'    => $vendor,
+            ]);
+    
+            $returnCode = $this->getApplication()->doRun($cacheInput, $output);
+
             //dump($returnCode);
             dump("locations cached");
 
-            $command2 = $this->getApplication()->find('app:item-cache');
-            $arguments2 = array(
-                "vendor" => $vendor
-            );
-            $input2 = new ArrayInput($arguments2);
-            $returnCode2 = $command2->run($input2, $output);
+            //cache items
+            $itemInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:item-cache',
+                'vendor'    => $vendor,
+            ]);
+
+            $returnCode2 = $this->getApplication()->doRun($itemInput, $output);
             //dump($returnCode3);
             dump("items cached");
 
             //cache item ids for this cendor
-            $command3 = $this->getApplication()->find('app:itemId-cache');
-            $arguments3 = array(
-                "vendor" => $vendor
-            );
-            $input3 = new ArrayInput($arguments3);
-            $returnCode3 = $command3->run($input3, $output);
+
+            $itemIDInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:itemId-cache',
+                'vendor'    => $vendor,
+            ]);
+
+            $returnCode3 = $this->getApplication()->doRun($itemIDInput, $output);
             //dump($returnCode3);
             dump("item ids cached");
             
-            $command4 = $this->getApplication()->find('app:inventory-update');
-            $arguments4 = array(
-                "ProductsByVendor" => "ProductsByVendor",
-                "InventoriesByVendor" => "InventoriesByVendor",
-                "Tenant" => '?Tenant=sm6apxdkrh',
-                "vendor" => $vendor
-            );
-            $input4 = new ArrayInput($arguments4);
-            $returnCode4 = $command4->run($input4, $output);
+            //update inventory
+            $inventoryInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:inventory-update',
+                'ProductsByVendor' => 'ProductsByVendor',
+                'InventoriesByVendor' => 'InventoriesByVendor',
+                'Tenant' => '?Tenant=sm6apxdkrh',
+                'vendor' => $vendor
+            ]);
+
+            $returnCode4 = $this->getApplication()->doRun($inventoryInput, $output);
             //dump($returnCode3);
             dump("items updated cached");
             
             //run location update for this vendor
-            $command5 = $this->getApplication()->find('app:location-update');
-            $arguments5 = array(
-                "Inventories" => 'Inventories',
-                "Tenant" => '?Tenant=sm6apxdkrh',
-                "vendor" => $vendor
-            );
-            $input5 = new ArrayInput($arguments5);
-            $returnCode5 = $command5->run($input5, $output);
+            $locationInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:location-update',
+                'Inventories' => 'Inventories',
+                'Tenant' => '?Tenant=sm6apxdkrh',
+                'vendor' => $vendor
+            ]);
+            
+            $returnCode5 = $this->getApplication()->doRun($locationInput, $output);
             //dump($returnCode5);
             dump("locations updated");
             

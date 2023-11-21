@@ -60,6 +60,9 @@ class Vendors
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $brandImage = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $command = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -241,6 +244,18 @@ class Vendors
     public function setBrandImage(?string $brandImage): self
     {
         $this->brandImage = $brandImage;
+
+        return $this;
+    }
+
+    public function getCommand(): ?string
+    {
+        return $this->command;
+    }
+
+    public function setCommand(string $command): static
+    {
+        $this->command = $command;
 
         return $this;
     }

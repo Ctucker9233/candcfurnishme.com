@@ -171,7 +171,9 @@ class OrderUpdateCommand extends Command
                         foreach($items as $item){
                             //dump("item value");
                             //dump($item->quantity);
-                            $saleItem = array('quantity' => $item->quantity);
+                            $saleItem = array(
+                                'quantity' => $item->quantity,
+                                'price' => $item->price_ex_tax);
                             $si = json_encode($saleItem);
                             //dump($item->quantity);
                             if($product = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $item->sku]))

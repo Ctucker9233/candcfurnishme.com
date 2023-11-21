@@ -200,7 +200,7 @@ class Client
     public function setItemVisibility($id, $body){
         $response = $this->clientPut('/catalog/products', $id, $body);
         //dump($response);
-        dump("visibility set");
+        //dump("visibility set");
         return $response;
     }
 

@@ -25,8 +25,11 @@ class SaleLineItems
     #[ORM\ManyToOne(inversedBy: 'SaleLineItems', cascade: ["persist", "remove"]) ]
     private ?Sale $sale = null;
 
+    #[ORM\Column]
+    private ?float $price = null;
+
     public function __toString(){
-        return $this->quantity ."x " . $this->getItem()->getItemDescription();
+        return $this->quantity ."x " . $this->getItem()->getItemDescription() . $this->getItem()->getPrice();
     }
 
     public function getId(): ?int
@@ -68,5 +71,28 @@ class SaleLineItems
         $this->sale = $sale;
 
         return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        if($price === null || 0){
+            $this->price = $this->getItemPrice();
+         }
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        if($price === null || 0){
+           $this->price = $this->getItemPrice();
+        }
+        
+        $this->price = $price; 
+        return $this;
+    }
+
+    public function getItemPrice(): ?Inventory
+    {
+        return $this->item->getPrice();
     }
 }

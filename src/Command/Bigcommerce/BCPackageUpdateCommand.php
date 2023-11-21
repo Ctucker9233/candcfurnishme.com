@@ -22,10 +22,10 @@ use App\Http\Bigcommerce\Client;
 use Psr\Log\LoggerInterface;
 
 #[AsCommand(
-        name: 'app:bc-item-update',
-        description: 'send item information to bigcommerce'   
+        name: 'app:bc-package-update',
+        description: 'send package information to bigcommerce'   
     )]
-class BCItemUpdateCommand extends Command
+class BCPackageUpdateCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager, 
@@ -46,46 +46,40 @@ class BCItemUpdateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try
-        { 
-            $items = $this->entityManager->getRepository(Inventory::class)->findAll();
+        {
+            $packages = $this->entityManager->getRepository(Packages::class)->findAll();
+            foreach($packages as $package){
 
-            foreach($items as $item){
-                //dump($item);
-
-                //if the product is in bc
-                if($item->getBCItemId() !== null){
-                    dump("item " . $item->getBCItemId() . " " . $item->getMfcsku());
-                    dump($item->getQuantity());
-                    //if hide on web and doesn't have a picture
-                    if($item->isWebHide() === true || $item->getPictureLink() === null){
-                        $id = $item->getBCItemId();
+                //if package is on bc
+                if($package->getBcPackId() !== null && $package->getBcPackDescription() !== null){
+                    dump("package");
+                    if($package->isActive() !== true){
+                        $id = $package->getBcPackId();
                         $body = json_encode(array(
-                            "name" => $item->getBcItemDescription(),
+                            "name" => $package->getBcPackDescription(),
                             "type" => "physical",
-                            "price" => $item->getPrice() / 100,
-                            "inventory_level" => $item->getQuantity(),
+                            "price" => $package->getPrice() / 100,
+                            "inventory_level" => $package->getPkgQuantity(),
                             "is_visible" => false
                         ), JSON_FORCE_OBJECT);
                         //dump($body);
                         $response = $this->client->setItemVisibility($id, $body);
                     }
-
-                    if($item->isWebHide() === false && $item->getPictureLink() !== null){
-                        $id = $item->getBCItemId();
+                    if($package->isActive() === true){
+                        $id = $package->getBcPackId();
                         $body = json_encode(array(
-                            "name" => $item->getBcItemDescription(),
+                            "name" => $package->getBcPackDescription(),
                             "type" => "physical",
-                            "price" => $item->getPrice() / 100,
-                            "inventory_level" => $item->getQuantity(),
+                            "price" => $package->getPrice() / 100,
+                            "inventory_level" => $package->getPkgQuantity(),
                             "is_visible" => true,
                         ), JSON_FORCE_OBJECT);
-                        //dump($body);
-                        $response = $this->client->setItemVisibility($id, $body);
+                            //dump($body);
+                            $response = $this->client->setItemVisibility($id, $body);
                     }
                 }
             }
-
-            dump("BC Items updated.");
+            dump("BC Packages updated.");
             return Command::SUCCESS;
         }
     

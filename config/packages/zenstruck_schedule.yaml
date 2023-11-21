@@ -15,538 +15,562 @@ zenstruck_schedule:
                 ttl: 600
 
         -   task: app:vendor-update Vendors ?Tenant=sm6apxdkrh
-            frequency: '0 * * * *' # every hour
+            frequency: '*/2 * * * *' # every hour
             without_overlapping:
                 enabled: true
                 ttl: 3600
 
-        -   task: app:ashley-update ASHLEY
-            frequency: '*/10 * * * *' # every 6 minutes
+        -   task: app:master-update
+            frequency: '*/15 * * * *' # every 6 minutes
             without_overlapping:
                 enabled: true
-                ttl: 600
+                ttl: 900
 
-        -   task: app:aamerica-update AMER
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:ashley-update ASHLEY
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:acme-update ACME
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:aamerica-update AMER
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:all-american-update AAFB
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600      
+        #-   task: app:acme-update ACME
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:amax-update AMAX
-            frequency: '*/30 * * * *' # every 30 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 1800
+        #-   task: app:all-american-update AAFB
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600      
 
-        -   task: app:amish-impressions-update AMSH
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:amax-update AMAX
+            #frequency: '*/30 * * * *' # every 30 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 1800
+
+        #-   task: app:amish-impressions-update AMSH
+            #frequency: '*/10 * * * *' # every 10 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
+
+        #-   task: app:artisan-update ARTI
+            #frequency: '*/10 * * * *' # every 10 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
         
-        -   task: app:aspen-update ASPN
-            frequency: '*/30 * * * *' # every 30 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 1800
+        #-   task: app:aspen-update ASPN
+            #frequency: '*/30 * * * *' # every 30 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 1800
 
-        -   task: app:audreys-update AYHD
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:audreys-update AYHD
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:bedtech-update EASY
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:bedtech-update EASY
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:bedding-update BIOA
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600        
+        #-   task: app:bedding-update BIOA
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600        
 
-        -   task: app:best-update BEST
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:best-update BEST
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:bramble-update BRMB
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:bramble-update BRMB
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:candf-update CFEN
-            frequency: '*/30 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 1800
+        #-   task: app:candf-update CFEN
+            #frequency: '*/30 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 1800
 
-        -   task: app:capel-update CAPE
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:capel-update CAPE
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:classy-art-update CLASS
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:classy-art-update CLASS
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:coast-update CTOC
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:coast-update CTOC
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:coaster-update COAS
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:coaster-update COAS
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:colonial-mills-update COMI
-            frequency: '*/30 * * * *' # every 30 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 1800
+        #-   task: app:colonial-mills-update COMI
+            #frequency: '*/30 * * * *' # every 30 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 1800
 
-        -   task: app:creative-coop-update CREA
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:creative-coop-update CREA
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:crestview-update CRES
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 600
+        #-   task: app:creative-design-update CRED
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:crown-mark-update CRWN
-            frequency: '*/10 * * * *' # every 6 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:crestview-update CRES
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 600
 
-        -   task: app:dalyn-update DLYN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:crown-mark-update CRWN
+            #frequency: '*/10 * * * *' # every 6 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:daniels-update DSAM
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:dalyn-update DLYN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:diamond-update DIAM
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:daniels-update DSAM
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:emerald-update EMER
-            frequency: '*/10 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:diamond-update DIAM
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:england-update ENGL
-            frequency: '*/10 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:emerald-update EMER
+            #frequency: '*/10 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:flexsteel-update FLEX
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:england-update ENGL
+            #frequency: '*/10 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:furniture-update FOFA
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300        
+        #-   task: app:flexsteel-update FLEX
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:gateway-update GATE
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:furniture-update FOFA
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300        
 
-        -   task: app:gomen-update GOMN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:gateway-update GATE
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:great-rooms-update GRFU
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:gomen-update GOMN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:guardsman-update GARD
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:great-rooms-update GRFU
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:hp-silk-update SILK
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:guardsman-update GARD
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:hollywood-update HOLL
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:hp-silk-update SILK
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:homelegance-update HOME
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:hollywood-update HOLL
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:horizon-home-update HRZN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:homelegance-update HOME
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:imax-update IMAX
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:horizon-home-update HRZN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:jc-furniture-update JCF
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:imax-update IMAX
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:klaussner-update KLSS
-            frequency: '*/10 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:jc-furniture-update JCF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:lariz-update LARZ
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:klaussner-update KLSS
+            #frequency: '*/10 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:legends-update LGDN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:lariz-update LARZ
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:leick-update LEIC
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:legends-update LGDN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:lite-source-update LITE
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:leick-update LEIC
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:mantua-update MANT
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:liberty-update LIBF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:martin-svensson-update MASV
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:lite-source-update LITE
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:mbc-update MBCM
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:mantua-update MANT
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:mcr-update MCRF
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:martin-svensson-update MASV
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:mf-oak-update MFOK
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:mbc-update MBCM
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
+
+        #-   task: app:mcr-update MCRF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
+
+        #-   task: app:mf-oak-update MFOK
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
         
-        -   task: app:midwest-update MCBK
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:midwest-update MCBK
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:milton-greens-update MLTN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:milton-greens-update MLTN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:mj-update MJF
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:mj-update MJF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:modus-update MFIN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:modus-update MFIN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
 
-        -   task: app:montage-update MONT
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:montage-update MONT
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:new-classic-update NCHF
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:new-classic-update NCHF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:new-pacific-direct-update NPDR
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:new-pacific-direct-update NPDR
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:nola-update NOLA
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:nola-update NOLA
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
 
-        -   task: app:north-american-update NAMF
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:north-american-update NAMF
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:oak-design-update OKDS
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:oak-design-update OKDS
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:omnia-update OMNI
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:omnia-update OMNI
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:pacific-update PMND
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:pacific-update PMND
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:palettes-update PLTT
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:palettes-update PLTT
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:park-hill-update PARK
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:park-hill-update PARK
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:peter-robinson-update PRCO
-            frequency: '*/10 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:peter-robinson-update PRCO
+            #frequency: '*/10 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:pleasant-update PLEA
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:pleasant-update PLEA
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:primitives-update PRIM
-            frequency: '*/10 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:primitives-update PRIM
+            #frequency: '*/10 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:propac-update PROP
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:propac-update PROP
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:redrock-update REDR
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:redrock-update REDR
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:restonic-update REST
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:restonic-update REST
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:shinoda-update SHIN
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300   
+        #-   task: app:shinoda-update SHIN
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300   
 
-        -   task: app:simply-amish-update SIMA
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300  
+        #-   task: app:simply-amish-update SIMA
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300  
 
-        -   task: app:sis-update SISC
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:sis-update SISC
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:spitiko-update SPIT
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:spitiko-update SPIT
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:streamline-update STRE
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:streamline-update STRE
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:studio-artique-update STAR
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:studio-artique-update STAR
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:stylecraft-update STCR
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:stylecraft-update STCR
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
 
-        -   task: app:sunny-designs-update SNDS
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:sunny-designs-update SNDS
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
                 
-        -   task: app:sure-update SURE
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:sure-update SURE
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:the-import-update TICO
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300  
+        #-   task: app:the-import-update TICO
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300  
 
-        -   task: app:trend-manor-update TRMN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300  
+        #-   task: app:trend-manor-update TRMN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300  
 
-        -   task: app:uma-update UMAE
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:uma-update UMAE
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:united-update UNSO
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300 
+        #-   task: app:united-update UNSO
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300 
 
-        -   task: app:urban-styles-update URBN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:urban-styles-update URBN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:vilo-update VILO
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:vilo-update VILO
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:vip-update VIPI
-            frequency: '*/30 * * * *' # every 10 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:vip-update VIPI
+            #frequency: '*/30 * * * *' # every 10 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:whitewood-update WHIT
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:whitewood-update WHIT
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:whittier-update WWFU
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:whittier-update WWFU
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:wilco-update WILC
-            frequency: '*/30 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:wilco-update WILC
+            #frequency: '*/30 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
-        -   task: app:winners-update WINN
-            frequency: '*/8 * * * *' # every 8 minutes
-            without_overlapping:
-                enabled: true
-                ttl: 300
+        #-   task: app:winners-update WINN
+            #frequency: '*/8 * * * *' # every 8 minutes
+            #without_overlapping:
+                #enabled: true
+                #ttl: 300
 
         -   task: app:package-update Products Packages ?Tenant=sm6apxdkrh
             frequency: '*/20 * * * *' # every 20 minutes
@@ -573,10 +597,16 @@ zenstruck_schedule:
                 ttl: 600
 
         -   task: app:bc-item-update
-            frequency: '*/25 * * * *' # every 20 minutes
+            frequency: '*/30 * * * *' # every 20 minutes
             without_overlapping:
                 enabled: true
-                ttl: 1500
+                ttl: 1800
+
+        -   task: app:bc-package-update
+            frequency: '*/30 * * * *' # every 20 minutes
+            without_overlapping:
+                enabled: true
+                ttl: 1800
 
         -   task: app:order-update
             frequency: '*/5 * * * *' # every 5 minutes

@@ -120,6 +120,7 @@ class ItemMatcher
             }
         }
         if(isset($BCitem['packageId'])){
+            dump($BCitem['packageId']);
             if($item->BcPackDescription === $BCitem['BcPackDescription']){
                 if($item->packPicture === $BCitem['packPicture']){
                     if($item->BcPackId === $BCitem['BcPackId']){
@@ -139,10 +140,6 @@ class ItemMatcher
         }
         else{
             return($BCitem);
-        }
-                
-            
-        
-    }
-    
+        }      
+    } 
 }

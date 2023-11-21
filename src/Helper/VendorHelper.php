@@ -21,7 +21,8 @@ class VendorHelper{
                 'email' => $item->EMail ?? "",
                 'phone' => $item->PhoneNumber ?? "",
                 'postalCode' => $item->PostalCode ?? "",
-                'state' => $item->State ?? ""
+                'state' => $item->State ?? "",
+                'command' => 'app:specific-vendor-update '.$item->Id
                 ];
                 array_push($vendorArray, $vendorsAsArray);
             }; 
@@ -52,6 +53,8 @@ class VendorHelper{
                 'phone' => $item->getPhone() ?? "",
                 'postalCode' => $item->getPostalCode() ?? "",
                 'state' => $item->getState() ?? "",
+                'active' => $item->isActive(),
+                'command' => 'app:specific-vendor-update '.$item->getVendorId(),
                 ];
                 array_push($vendorArray, $vendorsAsArray);
             }; 

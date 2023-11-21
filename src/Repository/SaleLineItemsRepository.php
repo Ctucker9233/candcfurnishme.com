@@ -53,13 +53,13 @@ class SaleLineItemsRepository extends ServiceEntityRepository
             ;
     }
 
-//    public function findOneBySomeField($value): ?SaleLineItems
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findPriceByItem($value): ?SaleLineItems
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.item = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

@@ -62,10 +62,12 @@ class CustomerRefreshCommand extends Command
         try
         {
             //first cache current database
-            $command = $this->getApplication()->find('app:customer-cache');
-            $arguments = [];
-            $input2 = new ArrayInput($arguments);
-            $returnCode = $command->run($input2, $output);
+            $customerInput = new ArrayInput([
+                // the command name is passed as first argument
+                'command' => 'app:customer-cache',
+            ]);
+    
+            $returnCode = $this->getApplication()->doRun($customerInput, $output);
             dump($returnCode);
 
             //get new data from api
