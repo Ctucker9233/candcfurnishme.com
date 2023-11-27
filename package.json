@@ -30,7 +30,7 @@
   "license": "ISC",
   "devDependencies": {
     "@hotwired/stimulus": "^3.0.0",
-    "tom-select": "^2.2.2",
+    "tom-select": "^2.3.1",
     "webpack-notifier": "^1.15.0"
   }
 }
