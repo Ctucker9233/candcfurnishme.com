@@ -1,8 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/style.css')}}">
 {% endblock %}
 
@@ -26,14 +22,19 @@
         {% endif %}
 
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputUsername">Username</label>
-        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
-        <label for="inputPassword">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        <div class="username">
+            <label for="inputUsername">Username</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+        </div>
+        <div class="password">
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        </div>
 
         <input type="hidden" name="_csrf_token"
             value="{{ csrf_token('authenticate') }}"
         >
+        <input type="hidden" name="_target_path" value="/admin">
 
         {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -50,5 +51,4 @@
         </button>
     </form>
 </div>
-{{ parent() }}
 {% endblock %}

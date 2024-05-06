@@ -37,7 +37,7 @@ class PackageHelper{
                     break;
                 }
             }
-            dump($packageItems);
+            //dump($packageItems);
             return $packageItems;    
         }
     }
@@ -128,13 +128,13 @@ class PackageHelper{
     }
 
     public function pkgQuantity($components, $package){
-        dump($components);
+        //dump($components);
         if($components === []){
             return $quantity = 0;
         }
         $targetQty = $package->componentQuantity;
         
-        dump($targetQty);
+        //dump($targetQty);
         $data = array();
         for($i=0; $i<count($targetQty); $i++){
             $count = 0;

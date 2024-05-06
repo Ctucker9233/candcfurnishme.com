@@ -121,9 +121,10 @@ class ItemMatcher
         }
         if(isset($BCitem['packageId'])){
             dump($BCitem['packageId']);
-            if($item->BcPackDescription === $BCitem['BcPackDescription']){
-                if($item->packPicture === $BCitem['packPicture']){
-                    if($item->BcPackId === $BCitem['BcPackId']){
+            //dump($item);
+            if($item->name === $BCitem['BcPackDescription']){
+                if(isset(json_decode($images->getContent())->data[0]->url_thumbnail) && json_decode($images->getContent())->data[0]->url_thumbnail === $BCitem['packPicture']){
+                    if($item->id === $BCitem['BcPackId']){
                         return "match";
                     }
                     else{

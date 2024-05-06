@@ -57,7 +57,7 @@ class BCItemUpdateCommand extends Command
                     dump("item " . $item->getBCItemId() . " " . $item->getMfcsku());
                     dump($item->getQuantity());
                     //if hide on web and doesn't have a picture
-                    if($item->isWebHide() === true || $item->getPictureLink() === null){
+                    if($item->isWebHide() === true || $item->getPictureLink() === null || $item->getQuantity() === 0){
                         $id = $item->getBCItemId();
                         $body = json_encode(array(
                             "name" => $item->getBcItemDescription(),

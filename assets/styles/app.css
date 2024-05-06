@@ -2,3 +2,15 @@
 body {
     background-color: lightgray;
 }
+
+#Inventory_isDeleted, #Inventory_webHide, #Inventory_discontinued, #Packages_active{
+    margin: 0px 10px 0px 1px;
+}
+
+.content-header, .content-body{
+    background-color: #e8e8e9;
+}
+
+#filters_webHide_0, #filters_webHide_1, #filters_discontinued_0, #filters_discontinued_1, #filters_isDeleted_0, #filters_isDeleted_1{
+    margin: 0px 10px 0px 0px;
+}

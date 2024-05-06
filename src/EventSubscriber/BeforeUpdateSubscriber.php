@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\InventoryRepository;
@@ -16,7 +16,7 @@ class BeforeUpdateSubscriber implements EventSubscriberInterface
         private EntityManagerInterface $entityManager){
     }
 
-    public function onBeforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event): void
+    public function onBeforeEntityPersistedEvent(BeforeEntityPersistedEvent $event): void
     {
         //dump($event);
         $sale = $event->getEntityInstance();
@@ -93,7 +93,7 @@ class BeforeUpdateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            BeforeEntityUpdatedEvent::class => 'onBeforeEntityUpdatedEvent',
+            BeforeEntityPersistedEvent::class => 'onBeforeEntityPersistedEvent',
         ];
     }
 }

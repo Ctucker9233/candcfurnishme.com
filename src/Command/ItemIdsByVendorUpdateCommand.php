@@ -66,7 +66,7 @@ class ItemIdsByVendorUpdateCommand extends Command
                 array_push($itemArray, $item);
                 
             }
-            dump($itemArray);
+            //dump($itemArray);
             return Command::SUCCESS;
         }
         catch(\Exception $exception){

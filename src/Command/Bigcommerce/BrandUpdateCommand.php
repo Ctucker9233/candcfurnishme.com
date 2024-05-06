@@ -51,7 +51,7 @@ class BrandUpdateCommand extends Command
             foreach($brands as $brand){
                 //dump($brand);
                 foreach($brand as $brnd){
-                    dump($brnd);
+                    //dump($brnd);
                     if(isset($brnd->name)){
                         if($vendor = $this->entityManager->getRepository(Vendors::class)->findOneBy(['vendorName' => $brnd->name])){
                             $vendor->setPageTitle($brnd->page_title);
@@ -61,7 +61,7 @@ class BrandUpdateCommand extends Command
                                 $vendor->setBCId($brnd->id);
                                 $this->entityManager->persist($vendor);
                                 $this->entityManager->flush();
-                                dump("Bigcommerce id set");
+                                dump("Bigcommerce brand id set");
                             }  
                         }
                         else{
@@ -82,6 +82,7 @@ class BrandUpdateCommand extends Command
                     $response = $this->client->postBrand($body);
                 }  
             }
+            dump("Bigcommerce brands updated");
             return Command::SUCCESS;
         }
     

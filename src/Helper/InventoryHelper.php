@@ -17,13 +17,13 @@ class InventoryHelper{
                 //dump($data->Prices[3]->Description);
                 if(isset($data->Prices[3])){
                     $price = self::priceConverter($data->Prices[3]->Price);
-                    dump("Sale Price");
-                    dump($price);
+                    //dump("Sale Price");
+                    //dump($price);
                 }
                 else{
                     if(isset($data->Prices[1]->Price)){
                         $price = self::priceConverter($data->Prices[1]->Price);
-                        dump($price);
+                        //dump($price);
                     }
                     elseif(isset($data->Prices[0]->Price)){
                         //dump($data->Prices);

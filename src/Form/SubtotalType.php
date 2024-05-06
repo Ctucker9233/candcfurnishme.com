@@ -6,6 +6,7 @@ use App\Entity\Sale;
 use App\Entity\SaleLineItems;
 use App\Entity\Inventory;
 use App\Form\SaleItemType;
+use App\Form\DataTransformer\SaleToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ArrayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -24,82 +26,81 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SubtotalType extends AbstractType
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private SaleToStringTransformer $transformer,)
     {
         $this->entityManager = $entityManager;
+        $this->transformer = $transformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('saleAmount');
+        $builder->add('saleAmount', NumberType::class)
+                ->add('save', SubmitType::class, ['label' => 'Update Subtotal']);
+        
+        $builder->get('saleAmount')->addModelTransformer($this->transformer);
 
-        $formModifier = function (FormInterface $form, $data) {
-            $prices = array();
-            if($data !== null){
-                foreach($data as $item){
-                    array_push($prices, $item->getItem()->getPrice());
-                }
-                $subtotal = array_sum($prices);
-                $form->get('saleAmount')->setData($subtotal);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($user): void {
+            if ($event->getForm()->getParent()->getData()->getSaleLineItems()['elements'] !== null) {
+                // we don't need to add the friend field because
+                // the message will be addressed to a fixed friend
+                $subtotal = 0;
+                //dd($event->getForm()->getParent()->getData()->getSaleLineItems());
+                $items = $event->getForm()->getParent()->getData()->getSaleLineItems();
+                dd($items['elements']);
+                $price = $rawPrice/100; 
+                    
+                $form = $event->getForm();
+                $item = $event->getData()->getItem();
+                $formOptions = [
+                    'empty_data' => $subtotal,
+                ];
+
+                // create the field, this is similar the $builder->add()
+                // field name, field type, field options
+                    $form->remove('saleAmount');
+                    $form->add('saleAmount', NumberType::class, $formOptions);
+                
             }
             else{
                 $subtotal = 0;
+                $form = $event->getForm();
+                $formOptions = [
+                    'empty_data' => $subtotal,
+                ];
+                
+                $form->add('saleAmount', NumberType::class, $formOptions);
+            }
+        });
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $sale = $event->getForm()->getParent()->getData();
+            $form = $event->getForm();
+    
+            // checks whether the user has chosen to display their email or not.
+            // If the data was submitted previously, the additional value that is
+            // included in the request variables needs to be removed.
+            if ($sale->getsaleLineItems()['elements'] !== []) {
+                $items = $sale->getsaleLineItems()['elements'];
+                $subtotal = 0;
+                foreach($items as $item){
+                    $price = $item->getPrice();
+                    $subtotal = $subtotal + $price;
+                };
+
+                $form->get('saleAmount')->setData($subtotal);
+
+            } else {
+                $subtotal = 0;
                 $form->get('saleAmount')->setData($subtotal);
             }
-        };
-
-        $builder->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function(FormEvent $event) {
-                $form = $event->getForm();
-                $sale = $event->getEntityInstance();
-        //dump($sale);
-                $id = $sale['id'];
-                $sale['ExternalSalesOrderNumber'] = $id + 100000;
-                $data = $sale['SaleLineItems'];
-        
-                if($data !== null){
-                    $prices = array();
-                    foreach($data as $item){
-                        //dump($item);
-                        $repository = $this->entityManager->getRepository(Inventory::class);
-                        $itm = $repository->findOneBy(['id' => $item['item']]);
-                        dump($itm);
-                        $price = $itm->getPrice();
-                        array_push($prices, $price);
-                    }
-                    $subtotal = array_sum($prices);
-                    if($sale['ShipViaCode'] === 'OD'){
-                        $sale['DeliveryAmount'] = 95;
-                    }
-                    else{
-                        $sale['DeliveryAmount'] = 0;
-                    }
-                    $delivery = $sale['DeliveryAmount'];
-                    $tax = ($subtotal + $delivery) * ($sale['TaxPercentage']/100);
-                    $total = $subtotal + $delivery + $tax;
-                    $sale['SaleAmount'] = $subtotal;
-                    $sale['TaxAmount'] = $tax;
-                    $sale['TotalAmount'] = $total;
-                }
-                else{
-                    $subtotal = 0;
-                    $sale['DeliveryAmount'] = 0;
-                    $sale['SaleAmount'] = $subtotal;
-                    $sale['TaxAmount'] = $subtotal;
-                    $sale['TotalAmount'] = $subtotal;
-                };
-            }
-        );
+        });
 
         $builder->get('saleAmount')->addEventListener(
             FormEvents::POST_SUBMIT,
             function(FormEvent $event) {
                 $form = $event->getForm();
                 $subtotal = $event->getForm()->getData();
-                $form->getParent()->get('saleAmount')->setData($subtotal);
+                $form->get('saleAmount')->setData($subtotal);
             }
         );
 
@@ -109,32 +110,6 @@ class SubtotalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sale::class
-        ]);
-    }
-
-    public function getSpecificLocationSelect(Request $request)
-    {
-        $sale = new Sale();
-        $sale->setSaleAmount($request->query->get('SaleAmount'));
-
-
-        #dd($article->getLocation());
-
-        if($article->getLocation() === ''){
-            return new Response(null, 204);
-        }
-        
-        $form = $this->createForm(ArticleFormType::class, $article);
-
-
-        // specificLocationName no field? Return an empty response
-        if (!$form->has('specificLocationName')) {
-            return new Response(null, 204);
-        }
-
-
-        return $this->render('article_admin/_specific_location_name.html.twig', [
-            'articleForm' => $form->createView(),
         ]);
     }
 }

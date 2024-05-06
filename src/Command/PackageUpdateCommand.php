@@ -77,11 +77,15 @@ class PackageUpdateCommand extends Command
                 $pkgPrice = $this->packageApiClient->fetchPackageItem($input->getArgument('Products'), $input->getArgument('Tenant'), $checkPkg['packageId']);
 
                 if($pkgPrice->getStatusCode() !==200){
-                    dump($items->getContent());
+                    //dump($pkgPrice->getContent());
                     return Command::FAILURE;
                 }
 
-                $checkPrice = (json_decode($pkgPrice->getContent())->Prices[0]->Price) * 100;
+                //dump(json_decode($pkgPrice->getContent())->Prices);
+                $checkPrice = 0;
+                if(null !== json_decode($pkgPrice->getContent())->Prices[0]->Price){
+                    $checkPrice = (json_decode($pkgPrice->getContent())->Prices[0]->Price) * 100;
+                }
                 //dump($checkPrice);
                 
             //     //dump($items->getContent());
@@ -105,7 +109,7 @@ class PackageUpdateCommand extends Command
                     };
                     
                 }
-                dump($components);
+                //dump($components);
                 $PkgQuantity = $this->packageHelper->pkgQuantity($components, $package);
                 //dump($quantity);
                 $result = $this->packageMatcher->matcher($checkPkg, $PkgQuantity, $checkPrice);
@@ -118,13 +122,25 @@ class PackageUpdateCommand extends Command
                 {
                     if($packages = $this->entityManager->getRepository(Packages::class)->findOneBy(['packageId' => $checkPkg['packageId']]))
                     {
-                        //dump("item exists");
+                        dump($checkPkg['packageId'] . "item exists");
+                        //dump($checkPrice);
                         $this->serializer->deserialize($pack, Packages::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $packages]);
                         // //dump($quantity);
                         $packages->setPkgQuantity($PkgQuantity);
                         $packages->setPrice($checkPrice);
+                        $pieces = $packages->getItemIds();
+                        dump($pieces);
+                        if($pieces !== null){
+                            foreach($pieces as $piece)
+                            {
+                                $packages->removeItemId($piece);
+                                $this->entityManager->persist($packages);
+                                $this->entityManager->flush();
+                            }   
+                        }
+                                               
                         foreach($Ids as $id)
-                        {              
+                        {   
                             $item = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $id]);
                             $packages->addItemId($item);
                             $this->entityManager->persist($packages);
@@ -134,7 +150,7 @@ class PackageUpdateCommand extends Command
                     }
                     else
                     {
-                        //dump("item doesn't exist");
+                        dump("item doesn't exist");
                         $packages = $this->serializer->deserialize($pack, Packages::class, 'json');
                         $packages->setPkgQuantity($PkgQuantity);
                         $packages->setPrice($checkPrice);

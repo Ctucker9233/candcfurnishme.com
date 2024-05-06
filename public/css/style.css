@@ -51,7 +51,7 @@ body{
 
 .store{
     display: flex;
-    flex: 0 0 100%;
+    flex: 0 0 20%;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -61,21 +61,21 @@ body{
     padding: 20px;
 }
 
-.store > h2{
+.store > h1, h2{
     padding-bottom: 20px;
     color: #ffffff;
 }
 
-.store-btn{
+.btn-primary.store-btn{
+    padding: 20px;
     width: 100%;
-    padding: 10px;
+    font-size: 2rem;
 }
 
 .store-btn > input {
     padding: 20px;
     width: 100%;
     font-size: 2rem;
-    text-decoration: underline;
 }
 
 /* Login CSS */
@@ -88,17 +88,30 @@ body{
         background-color: #000000;
         color: #ffffff;
     }
-
+.login-form > h1{
+    text-align: center;
+}
 .login-form > h1, h3{
   color: #ffffff;
 }
 
 .login-form > .btn.btn-lg.btn-primary{
         margin-top: 10px;
+        padding: 10px;
         background-color: #DADADA;
         color: #000000;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.5rem;
+        width: 100%;
     }
 
+.password, .username{
+    text-align: center;
+    width:100%;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
 /*Button CSS*/
 .btn-primary, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):active, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):active:focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):focus, .btn-primary:not(:disabled):not(.disabled):not(.btn-link):hover
 {
@@ -160,35 +173,4 @@ li.menu-header{
     color: #e9e8e8;
     font-size: 14px;
     border-bottom: 3px solid red;
-}
-
-/*Content*/
-.datagrid{
-    overflow-x: scroll;
-    max-width: 100%;
-}
-
-.content-header{
-    background-color: #e9e8e8;
-}
-
-.datagrid > tbody > tr {
-    border-bottom: 1px solid #aeadad
-}
-
-/* Customer detail */
-.billing-address{
-    width: 50%;
-    float: left;
-}
-
-.shipping-address{
-    width: 50%;
-
-    float: right;
-}
-
-.contact{
-    width: 100%;
-    float: right;
 }

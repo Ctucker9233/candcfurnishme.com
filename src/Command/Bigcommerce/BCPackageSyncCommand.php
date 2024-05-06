@@ -24,10 +24,10 @@ use App\Http\Bigcommerce\Client;
 use Psr\Log\LoggerInterface;
 
 #[AsCommand(
-        name: 'app:bc-item-sync',
+        name: 'app:bc-package-sync',
         description: 'send item information to bigcommerce'   
     )]
-class BCItemSyncCommand extends Command
+class BCPackageSyncCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager, 
@@ -71,38 +71,32 @@ class BCItemSyncCommand extends Command
                             $images = $this->client->getImages($itm->id);
                             $BCmatch = $this->itemMatcher->BCmatcher($itm, $images);
                             if($BCmatch === "match"){
-                                //dump("nothing to update");
+                                dump("nothing to update");
                             }
                             else{
-                                if(isset($BCmatch['itemId'])){
-                                    if($BCmatch['isDeleted'] === false && $BCmatch['webHide'] === false && $BCmatch['backorderCode'] === 'B'){
-                                        if($im = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $itm->sku])){
-                                            if($itm->name !== $im->getBcItemDescription()){
-                                                $im->setBcItemDescription($itm->name);
-                                            }
                                 
-                                            if(isset(json_decode($images->getContent())->data[0]->url_thumbnail)){
-                                                if($im->getPictureLink() === null || $im->getPictureLink() !== (json_decode($images->getContent())->data[0]->url_thumbnail)){
-                                                    //dump("Bigcommerce id set");
-                                                    //dump(json_decode($images->getContent())->data[0]->url_thumbnail);
-                                                    $im->setPictureLink(json_decode($images->getContent())->data[0]->url_thumbnail);
-                                                    $this->entityManager->persist($im);
-                                                    $this->entityManager->flush();
-                                                } 
+                                if(isset($BCmatch['packageId'])){
+                                    dump($BCmatch['packageId']);
+                                    if($p=$this->entityManager->getRepository(Packages::class)->findOneBy(['packageId' => $itm->sku])){
+                                        if($p->isActive() === true){
+                                            if($p->getBcPackDescription() === null || $itm->name !== $p->getBcPackDescription()){
+                                            $p->setBcPackDescription($itm->name);
                                             }
-                                            if($im->getBcItemId() === null || $im->getBcItemId() !== $itm->id){
-                                                $im->setBcItemId($itm->id);
-                                                $this->entityManager->persist($im);
+                                            if(isset(json_decode($images->getContent())->data[0]->url_thumbnail)){
+                                                if($p->getPackPicture() !== json_decode($images->getContent())->data[0]->url_thumbnail){
+                                                    $p->setPackPicture(json_decode($images->getContent())->data[0]->url_thumbnail);
+                                                    $this->entityManager->persist($p);
+                                                    $this->entityManager->flush();
+                                                }
+                                            }
+                                            if($p->getBcPackId() !== $itm->id){
+                                                $p->setBcPackId($itm->id);
+                                                $this->entityManager->persist($p);
                                                 $this->entityManager->flush();
                                                 dump("Bigcommerce id set");
                                             }
-                                            if($im->getGtin() === null || $im->getGtin() !== $itm->gtin){
-                                                $im->setGtin($itm->gtin);
-                                                $this->entityManager->persist($im);
-                                                $this->entityManager->flush();
-                                            }
                                         }
-                                    }
+                                    }  
                                 }
                             }
                         }
@@ -114,7 +108,7 @@ class BCItemSyncCommand extends Command
             }
             //dump($items->meta->pagination);
             // 
-            dump("BC items synced");
+            dump("BC Packages synced");
             return Command::SUCCESS;
         }
     

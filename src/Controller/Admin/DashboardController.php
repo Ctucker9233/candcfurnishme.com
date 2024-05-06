@@ -100,7 +100,8 @@ class DashboardController extends AbstractDashboardController implements Dashboa
     public function configureAssets(): Assets
     {
         return parent::configureAssets()
-            ->addCssFile('css/style.css');
+            ->addWebpackEncoreEntry('app')
+            ->addCssFile('C:\Users\ctucker\Desktop\tucker-solutions2\public\css\style.css');
     }
 
 }

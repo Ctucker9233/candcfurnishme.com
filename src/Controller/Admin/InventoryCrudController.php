@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -38,7 +39,7 @@ class InventoryCrudController extends AbstractCrudController
             yield IdField::new('id')->onlyOnIndex(),
             yield ImageField::new('pictureLink', 'Image')->onlyOnIndex(),
             yield TextField::new('pictureLink')->hideOnIndex(),
-            yield FormField::addPanel('Item Information')->collapsible(),
+            yield FormField::addFieldset('Item Information')->collapsible(),
             yield IdField::new('BCItemId', "BC ID")
                 ->setColumns(6),
             yield TextField::new('itemID', 'Item ID')
@@ -57,7 +58,7 @@ class InventoryCrudController extends AbstractCrudController
                 ->setCurrency('USD')
                 ->setStoredAsCents()
                 ->setColumns(3),
-            yield FormField::addPanel('Settings')->collapsible(),
+            yield FormField::addFieldset('Settings')->collapsible(),
             yield BooleanField::new('isDeleted', 'Is Deleted'),
             yield BooleanField::new('webHide', 'Hide on Web'),
             yield BooleanField::new('discontinued'),

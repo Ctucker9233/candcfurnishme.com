@@ -71,7 +71,7 @@ class InventoryUpdateCommand extends Command
             $itemGet = $this->inventoryApiClient->fetchItems($input->getArgument('ProductsByVendor'), $input->getArgument('Tenant'), $vendor);
                     
             if($itemGet->getStatusCode() !==200){
-                dump($itemGet->getContent());
+                //dump($itemGet->getContent());
                 return Command::FAILURE;
             }
 
@@ -93,7 +93,7 @@ class InventoryUpdateCommand extends Command
                     $locations = $this->inventoryApiClient->fetchQuantity($input->getArgument('InventoriesByVendor'), $input->getArgument('Tenant'), $vendor);
                                 
                     if($locations->getStatusCode() !==200 ){
-                        dump($locations->getContent());
+                        //dump($locations->getContent());
                         return Command::FAILURE;
                     };
 

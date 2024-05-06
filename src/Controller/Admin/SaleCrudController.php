@@ -80,7 +80,7 @@ class SaleCrudController extends AbstractCrudController
                     ->setChoices( array_combine( $order, $order ) )
                     ->renderAsBadges()
                     ->setColumns(6);
-            yield FormField::addPanel('Sale Information')->collapsible();
+            yield FormField::addFieldSet('Sale Information')->collapsible();
             yield AssociationField::new('salesperson')
                 ->setCrudController(UserCrudController::class)
                 ->autocomplete()
@@ -109,30 +109,14 @@ class SaleCrudController extends AbstractCrudController
                 ->setChoices( array_combine( $payment, $payment ) )
                 ->renderAsBadges();
             
-            yield NumberField::new('saleAmount')
-                ->setFormTypeOption(
-                    'disabled',
-                    true
-                )
-                ->setFormTypeOptions([
-                    'row_attr' => [
-                        'data-controller' => 'subtotal_controller',
-                    ],
-                    'attr' => [
-                        'data-action' => 'subtotal#render',
-                    ],
-                ]);
+            yield NumberField::new('saleAmount');
             yield NumberField::new('DeliveryAmount')->hideOnIndex();
             yield TextField::new('taxCode');
             $tax = [7.75, 8.25, 8.5, 8.75];
             yield ChoiceField::new('TaxPercentage', 'Tax Percentage')
                 ->hideOnIndex()
                 ->setChoices( array_combine( $tax, $tax ) );
-            yield NumberField::new('taxAmount')
-                ->setFormTypeOption(
-                    'disabled',
-                    true
-                );
+            yield NumberField::new('taxAmount');
             
             yield NumberField::new('totalAmount')->hideOnIndex();
             
@@ -152,11 +136,12 @@ class SaleCrudController extends AbstractCrudController
     {
         return parent::configureActions($actions)
             ->setPermission(Action::INDEX, 'ROLE_SALES')
-            ->setPermission(Action::NEW, 'ROLE_SALES')
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_SALES')
             ->setPermission(Action::EDIT, 'ROLE_SALES')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::BATCH_DELETE, 'ROLE_ADMIN');
+            ->setPermission(Action::BATCH_DELETE, 'ROLE_ADMIN')
+            ->remove(Crud::PAGE_INDEX, Action::NEW);
     }
 
     // public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface

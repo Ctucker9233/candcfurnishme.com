@@ -22,10 +22,10 @@ use App\Http\Bigcommerce\Client;
 use Psr\Log\LoggerInterface;
 
 #[AsCommand(
-        name: 'app:bc-item-new',
-        description: 'send item information to bigcommerce'   
+        name: 'app:bc-package-new',
+        description: 'send package information to bigcommerce'   
     )]
-class BCItemNewCommand extends Command
+class BCPackageNewCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager, 
@@ -47,38 +47,35 @@ class BCItemNewCommand extends Command
     {
         try
         { 
-            $items = $this->entityManager->getRepository(Inventory::class)->findAll();
 
-            foreach($items as $item){
+            $packages = $this->entityManager->getRepository(Packages::class)->findAll();
+            foreach($packages as $package){
 
-                //if not in bigcommerce and not hidden and is backorderable
-                if($item->getBCItemId() === null && $item->isWebHide() === false && $item->getBackorderCode() === 'B' && $item->getBcItemDescription() !== null){
-                    dump("new item");
-                    $price = $item->getPrice() / 100;
+                if($package->getBcPackId() === null && $package->getBcPackDescription() !== null){
+                    dump("new package");
                     $body = json_encode(array(
-                        "name" => $item->getBcItemDescription(),
+                        "name" => $package->getBcPackDescription(),
                         "type" => "physical",
                         "weight" => 0,
-                        "sku" => $item->getItemID(),
-                        "price" => $price,
-                        "brand_id" => $item->getBCVendorId(),
+                        "sku" => $package->getPackageId(),
+                        "price" => $package->getPrice() / 100,
+                        "brand_name" => "Tuckers Valley Furniture",
                         "inventory_tracking" => "product",
-                        "inventory_level" => $item->getQuantity(),
+                        "inventory_level" => $package->getPkgQuantity(),
                         "is_visible" => false,
-                        "mpn" => $item->getMfcsku(),
-                        "gtin" => $item->getGtin()
+                        "mpn" => $package->getBcPackId(),
                     ), JSON_FORCE_OBJECT);
                     //dump($body);
                     $response = $this->client->postProduct($body);
                     $newid = json_decode($response->getContent())->data->id;
                     //dump(json_decode($response->getContent()));
-                    $itm = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $item->getItemID()]);
-                    $itm->setBCItemId($newid);
-                    $this->entityManager->persist($itm);
-                    $this->entityManager->flush();
+                    $pkg = $this->entityManager->getRepository(Packages::class)->findOneBy(['packageId' => $package->getPackageId()]); 
+                    $pkg->setBCPackId($newid);
+                    $this->entityManager->persist($pkg);
+                    $this->entityManager->flush(); 
                 }
             }
-            dump("BC New Items Added");
+            dump("BC New Packages added");
             return Command::SUCCESS;
         }
     

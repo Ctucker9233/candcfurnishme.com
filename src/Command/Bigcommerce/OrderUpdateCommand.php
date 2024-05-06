@@ -173,7 +173,7 @@ class OrderUpdateCommand extends Command
                             //dump($item->quantity);
                             $saleItem = array(
                                 'quantity' => $item->quantity,
-                                'price' => $item->price_ex_tax);
+                                'price' => floatval($item->price_ex_tax));
                             $si = json_encode($saleItem);
                             //dump($item->quantity);
                             if($product = $this->entityManager->getRepository(Inventory::class)->findOneBy(['itemID' => $item->sku]))

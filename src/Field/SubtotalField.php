@@ -6,19 +6,15 @@ use App\Form\SubtotalType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 
-final class SubtotalField implements FieldInterface
+class SubtotalField implements FieldInterface
 {
     use FieldTrait;
-
-    public static function new(string $propertyName, ?string $label = 'Subtotal'): self
+    public static function new(string $propertyName, ?string $label = "Subtotal")
     {
         return (new self())
             ->setProperty($propertyName)
-            // this template is used in 'index' and 'detail' pages
-            // this is used in 'edit' and 'new' pages to edit the field contents
-            // you can use your own form types too
+            ->setLabel($label)
             ->setFormType(SubtotalType::class)
-            ->setcolumns(3)
-        ;
-    }   
-}
+            ->setDefaultColumns('col-md-4 col-xxl-3');
+    }
+}  

@@ -29,7 +29,7 @@ class SaleLineItems
     private ?float $price = null;
 
     public function __toString(){
-        return $this->quantity ."x " . $this->getItem()->getItemDescription() . $this->getItem()->getPrice();
+        return $this->quantity ."x " . $this->getItem()->getItemDescription() . " $". $this->getItem()->getPrice()/100;
     }
 
     public function getId(): ?int
@@ -91,8 +91,8 @@ class SaleLineItems
         return $this;
     }
 
-    public function getItemPrice(): ?Inventory
+    public function getItemPrice(): ?float
     {
-        return $this->item->getPrice();
+        return $this->item->getPrice()/100;
     }
 }

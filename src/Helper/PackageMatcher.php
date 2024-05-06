@@ -44,7 +44,7 @@ class PackageMatcher
                                 //dump('match');
                                 return 'match';
                             }
-                        }  
+                        }
                     } 
                 } 
                   

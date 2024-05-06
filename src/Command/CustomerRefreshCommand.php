@@ -79,7 +79,7 @@ class CustomerRefreshCommand extends Command
             echo "Back in Command";
 
             if($customerProfile->getStatusCode() !==200){
-                dump($customerProfile->getContent());
+                //dump($customerProfile->getContent());
                 return Command::FAILURE;
             }
             $customer = json_decode($customerProfile->getContent(), null, 512, JSON_THROW_ON_ERROR);
